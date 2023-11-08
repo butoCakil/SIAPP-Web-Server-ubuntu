@@ -20,11 +20,13 @@ $password = "1234";
 $topic = "responServer_" . $nodevice; // Menggunakan topik "responServer" dengan tambahan ID perangkat
 $message = @$jsonString ? $jsonString : "{" . $json . "}";
 
-// $mqtt = new \Bluerhinos\phpMQTT($host, $port, "PHP Client");
+// $infoValue = $message['respon']['info'];
 
 if ($mqtt->connect(true, NULL, $username, $password)) {
-    echo "Berhasil publish \"$topic\"";
+    echo "Berhasil kirim balasan ke \"$topic\"";
     echo "\n";
+    // echo $infoValue;
+    // echo "\n";
     echo "\n";
     $mqtt->publish($topic, $message, 0);
 } else {
@@ -33,3 +35,4 @@ if ($mqtt->connect(true, NULL, $username, $password)) {
 }
 
 $mqtt->close();
+

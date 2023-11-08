@@ -12,7 +12,6 @@ $password = "1234"; // Ganti dengan password Anda (jika diperlukan)
 $topic = "dariMCU"; // Ganti dengan topik yang Anda ingin subscribec
 
 $client_id = "php_subscriber_" . rand(); // ID pelanggan MQTT
-// $client_id = "202309A000"; // ID pelanggan MQTT
 
 global $mqtt;
 $mqtt = new Bluerhinos\phpMQTT($host, $port, $client_id);
@@ -41,8 +40,6 @@ if ($mqtt->connect(true, NULL, $username, $password)) {
 
         // echo "Menerima Pesan\n"; 
     }
-
-    // $mqtt->close();
 } else {
     echo "Koneksi ke broker MQTT gagal. Coba lagi nanti.\n";
 }
@@ -55,7 +52,7 @@ function procmsg($topic, $msg)
 
     // Fungsi ini akan dipanggil ketika pesan diterima pada topik yang di-subscribe
     // Anda dapat menambahkan logika di sini untuk menangani pesan yang diterima
-    echo "[$timestamp] - Menerima pesan pada topik: $topic - Pesan: $msg\n";
+    echo "[$timestamp]\nMenerima pesan dari: $topic - Pesan: $msg\n";
 
     $json = (array)json_decode($msg, true);
 
@@ -78,7 +75,7 @@ function procmsg($topic, $msg)
         echo "Tidak ada Respon dari \"directagJSON\".\n";
     } else {
         // Respons berhasil, Anda dapat mengolah respons sesuai kebutuhan
-        echo "[$timestamp] - Response dari \"$topic\" : " . $response . "\n";
+        echo "[$timestamp]\nBerhasil merespon \"$topic\" : " . $response . "\n";
 
         $jsonString = json_encode($response);
         include "pub_mqtt.php";
