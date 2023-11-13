@@ -49,61 +49,38 @@ if (@$navlink == 'Beranda') {
         $navlink_sub4_active_2 = '';
     }
 } elseif (@$navlink == 'Wali') {
+    $navlink_sub2_active_0 = '';
+    $navlink_sub2_active_1 = '';
+    $navlink_sub2_active_2 = '';
+    $navlink_sub2_active_3 = '';
+    $navlink_sub2_active_4 = '';
+    $navlink_sub2_active_5 = '';
+    $navlink_sub2_active_6 = '';
+    $navlink_sub2_active_7 = '';
+    $navlink_sub2_active_8 = '';
 
     if ($navlink_sub == 'harian') {
-        $navlink_sub2_active_0 = '';
-        $navlink_sub2_active_7 = '';
         $navlink_sub2_active_1 = 'active';
-        $navlink_sub2_active_2 = '';
-        $navlink_sub2_active_3 = '';
-        $navlink_sub2_active_5 = '';
-        $navlink_sub2_active_6 = '';
     } elseif ($navlink_sub == 'bulanan') {
-        $navlink_sub2_active_0 = '';
-        $navlink_sub2_active_7 = '';
-        $navlink_sub2_active_1 = '';
         $navlink_sub2_active_2 = 'active';
-        $navlink_sub2_active_3 = '';
-        $navlink_sub2_active_5 = '';
-        $navlink_sub2_active_6 = '';
     } elseif ($navlink_sub == 'tahunan') {
-        $navlink_sub2_active_0 = '';
-        $navlink_sub2_active_7 = '';
-        $navlink_sub2_active_1 = '';
-        $navlink_sub2_active_2 = '';
         $navlink_sub2_active_3 = 'active';
-        $navlink_sub2_active_5 = '';
-        $navlink_sub2_active_6 = '';
     } elseif ($navlink_sub == 'kontak') {
-        $navlink_sub2_active_0 = '';
-        $navlink_sub2_active_7 = '';
-        $navlink_sub2_active_1 = '';
-        $navlink_sub2_active_2 = '';
-        $navlink_sub2_active_3 = '';
         $navlink_sub2_active_5 = 'active';
-        $navlink_sub2_active_6 = '';
-    } else {
-        $navlink_sub2_active_0 = '';
-        $navlink_sub2_active_7 = '';
-        $navlink_sub2_active_1 = '';
-        $navlink_sub2_active_2 = '';
-        $navlink_sub2_active_3 = '';
-        $navlink_sub2_active_5 = '';
-        $navlink_sub2_active_6 = '';
     }
 
     if ($navlink_sub == 'semuakelas') {
         $menu_open_sub_1 = '';
         $menu_open_sub_2 = 'menu-open';
         $navlink_sub2_active_0 = 'active';
-        $navlink_sub2_active_7 = '';
-        $navlink_sub2_active_6 = '';
+    } elseif ($navlink_sub == 'kegiatan') {
+        $menu_open_sub_1 = '';
+        $menu_open_sub_2 = 'menu-open';
+        $navlink_sub2_active_8 = 'active';
     } else if ($navlink_sub == 'nilaikelas') {
         $menu_open_sub_1 = '';
         $menu_open_sub_2 = 'menu-open';
-        $navlink_sub2_active_0 = '';
         $navlink_sub2_active_7 = 'active';
-        $navlink_sub2_active_6 = '';
     } else if ($navlink_sub != '' && $navlink_sub != 'semuakelas') {
         $menu_open_sub_1 = 'menu-open';
         $menu_open_sub_2 = '';
@@ -583,6 +560,12 @@ if (@$navlink == 'Beranda') {
                             <a href="<?= @$dir; ?>semuakelas.php" class="nav-link <?= $navlink_sub2_active_0; ?>">
                                 &nbsp;<i class="far fa-folder-open nav-icon text-warning"></i>
                                 <p>Kehadiran Kelas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= @$dir; ?>event.php" class="nav-link <?= $navlink_sub2_active_8; ?>">
+                                &nbsp;<i class="far fa-folder-open nav-icon text-info"></i>
+                                <p>Kegiatan</p>
                             </a>
                         </li>
                         <li class="nav-item">
