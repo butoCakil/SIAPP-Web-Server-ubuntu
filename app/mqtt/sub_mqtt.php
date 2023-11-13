@@ -3,7 +3,7 @@ date_default_timezone_set('Asia/Jakarta');
 $timestamp = date('Y-m-d H:i:s');
 require "vendor/autoload.php"; // Memuat pustaka phpMQTT yang telah diinstal melalui Composer
 
-$devices = ["2309G001", "2309G002", "2309G003", "2309G004", "2309MAS001", "2309MAS002", "2309MAS003", "2310AT001", "2310AT002", "2310AT003", "2310AT004", "2310AT005", "2310AT006", "2310AT007", "2310AT008", "2310AT009", "2310AT010", "2310DKV001", "2310DKV002", "2310DKV003", "2310DKV004", "2310DKV005", "2310DKV006", "2310DKV007", "2310DKV008", "2310DKV009", "2310DKV010", "2310TE001", "2310TE002", "2310TE003", "2310TE004", "2310TE005", "2310TE006", "2310TE007", "2310TE008", "2310TE009", "2310TE010", "2310NA001", "2310NA002", "2310NA003", "2310NA004", "2310NA005", "2310NA006", "2310NA007", "2310NA008", "2310NA009", "2310NA010", "2310NA011", "2310NA012", "2310NA013", "2310NA014", "2310NA015", "2310NA016", "2310NA017", "2310NA018", "2310NA019", "2310NA020", "2310IZ001", "2310IZ002", "2310IZ003",];
+$devices = ["2309G001", "2309G002", "2309G003", "2309G004", "2309MAS001", "2309MAS002", "2309MAS003", "2309MAS004", "2310AT001", "2310AT002", "2310AT003", "2310AT004", "2310AT005", "2310AT006", "2310AT007", "2310AT008", "2310AT009", "2310AT010", "2310DKV001", "2310DKV002", "2310DKV003", "2310DKV004", "2310DKV005", "2310DKV006", "2310DKV007", "2310DKV008", "2310DKV009", "2310DKV010", "2310TE001", "2310TE002", "2310TE003", "2310TE004", "2310TE005", "2310TE006", "2310TE007", "2310TE008", "2310TE009", "2310TE010", "2310NA001", "2310NA002", "2310NA003", "2310NA004", "2310NA005", "2310NA006", "2310NA007", "2310NA008", "2310NA009", "2310NA010", "2310NA011", "2310NA012", "2310NA013", "2310NA014", "2310NA015", "2310NA016", "2310NA017", "2310NA018", "2310NA019", "2310NA020", "2310IZ001", "2310IZ002", "2310IZ003",];
 
 $host = "localhost"; // Ganti dengan alamat broker MQTT Anda
 $port = 1883; // Port broker MQTT (biasanya 1883)
@@ -37,8 +37,6 @@ if ($mqtt->connect(true, NULL, $username, $password)) {
     while ($mqtt->proc()) {
         // Loop ini akan menjalankan proses MQTT secara berkelanjutan
         // Anda dapat menambahkan logika di sini untuk menangani pesan yang diterima
-
-        // echo "Menerima Pesan\n"; 
     }
 } else {
     echo "Koneksi ke broker MQTT gagal. Coba lagi nanti.\n";
@@ -72,7 +70,7 @@ function procmsg($topic, $msg)
     $response = file_get_contents($urlWithParams);
 
     if (!$response) {
-        echo "Tidak ada Respon dari \"directagJSON\".\n";
+        echo "Tidak ada Respon dari \"directagJSON\".\n\n";
     } else {
         // Respons berhasil, Anda dapat mengolah respons sesuai kebutuhan
         echo "[$timestamp]\nBerhasil merespon \"$topic\" : " . $response . "\n";
