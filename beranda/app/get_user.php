@@ -42,5 +42,7 @@ if (@$nokartu_login) {
     $query2 = mysqli_query($konek, $sql2);
     $data_user = mysqli_fetch_array($query2);
 } else {
-    header("Location: $dir../index.php");
+    if ($level_login != "superadmin") {
+        header("Location: $dir../index.php");
+    }
 }
