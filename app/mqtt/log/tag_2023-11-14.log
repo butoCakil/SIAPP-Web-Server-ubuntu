@@ -1,0 +1,12 @@
+[2023-11-14 16:44:10]
+Menerima pesan dari: dariMCU_2309MAS004 - Pesan: {"nokartu":"93F67406","idchip":"304582","nodevice":"2309MAS004","key":"1234567890987654321","ipa":"10.16.0.140"}
+[2023-11-14 16:44:10]
+Berhasil merespon "dariMCU_2309MAS004" : {"respon":[{"id":"304582","nodevice":"2309MAS004","message":"IDTT","info":"93F67406, Kartu ID ini belum terdaftar","nokartu":"93F67406"}]}
+Berhasil kirim balasan ke "responServer_2309MAS004"
+
+[2023-11-14 16:48:10]
+Menerima pesan dari: dariMCU_2309MAS004 - Pesan: {"nokartu":"93F67406","idchip":"304582","nodevice":"2309MAS004","key":"1234567890987654321","ipa":"10.16.0.140"}
+[2023-11-14 16:48:10]
+Berhasil merespon "dariMCU_2309MAS004" : {"respon":[{"id":"304582","nodevice":"2309MAS004","message":"IDTT","info":"93F67406, Kartu ID ini belum terdaftar","nokartu":"93F67406"}]}
+Berhasil kirim balasan ke "responServer_2309MAS004"
+

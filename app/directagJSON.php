@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
+// ini_set('display_errors', 1);
 // Atau
-error_reporting(E_ALL && ~E_NOTICE);
+// error_reporting(E_ALL && ~E_NOTICE);
 
 //tanggal dan jam hari ini
 date_default_timezone_set('Asia/Jakarta');
@@ -16,6 +16,7 @@ $nokartu = @$_GET['nokartu'];
 $idchip = @$_GET['idchip'];
 // nomor device
 $nodevice = @$_GET['nodevice'];
+$key = @$_GET['key'];
 
 $sub_pesan = "";
 $hasil_nodevice = "";
@@ -817,7 +818,7 @@ if ($nokartu) {
                                     $selisih_waktu = $waktu_sekarang - $waktu_mulai;
 
                                     if ($selisih_waktu > 300) {
-                                        if (strtotime($tanggal) == ($waktu_tanggal)) { 
+                                        if (strtotime($tanggal) == ($waktu_tanggal)) {
                                             $stmt = mysqli_stmt_init($konek);
                                             if (mysqli_stmt_prepare($stmt, "UPDATE daftarijin SET jam_kembali = ? WHERE nokartu = ? AND `timestamp` = ?")) {
                                                 mysqli_stmt_bind_param(
