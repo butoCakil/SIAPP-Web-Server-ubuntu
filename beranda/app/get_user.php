@@ -16,7 +16,7 @@ if (@$subDir) {
 include @$dir . '../app/konversiwaktu.php';
 include @$dir . '../config/konesi.php';
 
-if ($_SESSION['username_login']) {
+if (@$_SESSION['username_login']) {
     $nama_login = $_SESSION['username_login'];
     $email_login = $_SESSION['email_login'];
     $password_login = $_SESSION['password_login'];
@@ -37,8 +37,10 @@ if ($_SESSION['username_login']) {
     header("Location: $dir../index.php");
 }
 
-if ($nokartu_login) {
+if (@$nokartu_login) {
     $sql2 = "SELECT * FROM `$datab_login` WHERE nokartu = '$nokartu_login' ORDER BY id ASC";
     $query2 = mysqli_query($konek, $sql2);
     $data_user = mysqli_fetch_array($query2);
+} else {
+    header("Location: $dir../index.php");
 }
