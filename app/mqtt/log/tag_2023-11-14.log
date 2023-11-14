@@ -100,3 +100,9 @@ Menerima pesan dari: dariMCU_2309MAS004 - Pesan: {"nokartu":"ED68DF6A","idchip":
 Berhasil merespon "dariMCU_2309MAS004" : {"respon":[{"id":"304582","nodevice":"2309MAS004","message":"BPEB","info":"Aprillia Palupi, S.P, Berhasil melakukan Presensi Kegiatan [Mulai - Baru]","nokartu":"ED68DF6A"}]}
 Berhasil kirim balasan ke "responServer_2309MAS004"
 
+[2023-11-14 21:00:23]
+Menerima pesan dari: dariMCU_2309MAS004 - Pesan: {"nokartu":"93F67406","idchip":"304582","nodevice":"2309MAS004","key":"1234567890987654321","ipa":"10.16.0.140"}
+[2023-11-14 21:00:23]
+Berhasil merespon "dariMCU_2309MAS004" : {"respon":[{"id":"304582","nodevice":"2309MAS004","message":"IDTT","info":"93F67406, Kartu ID ini belum terdaftar","nokartu":"93F67406"}]}
+Berhasil kirim balasan ke "responServer_2309MAS004"
+
