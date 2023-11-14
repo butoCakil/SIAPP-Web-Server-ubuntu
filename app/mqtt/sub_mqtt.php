@@ -61,7 +61,7 @@ function procmsg($topic, $msg)
     $ip_a = @$json['ipa'];
 
     // URL target yang ingin Anda panggil dengan parameter GET
-    $url = 'http://localhost/siap.smknbansari.sch.id/app/directagJSON.php';
+    $url = 'http://localhost/app/directagJSON.php';
 
     // Membuat URL lengkap dengan parameter GET
     $urlWithParams = $url . '?nokartu=' . urlencode($nokartu) . '&idchip=' . urlencode($idchip) . '&nodevice=' . urlencode($nodevice) . '&key=' . urlencode($key) . '&ipa=' . urlencode($ip_a);
