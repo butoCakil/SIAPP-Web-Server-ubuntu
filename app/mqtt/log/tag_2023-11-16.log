@@ -1,0 +1,42 @@
+[2023-11-16 01:28:35]
+Menerima pesan dari: dariMCU_2309MAS004 - Pesan: {"nokartu":"0ACB456A","idchip":"304582","nodevice":"2309MAS004","key":"1234567890987654321","ipa":"10.16.0.140"}
+[2023-11-16 01:28:35]
+Berhasil merespon "dariMCU_2309MAS004" : {"respon":[{"id":"304582","nodevice":"2309MAS004","message":"IDTT","info":"0ACB456A, Kartu ID ini belum terdaftar","nokartu":"0ACB456A"}]}
+Berhasil kirim balasan ke "responServer_2309MAS004"
+
+[2023-11-16 01:42:55]
+Menerima pesan dari: dariMCU_2309MAS004 - Pesan: {"nokartu":"89E6663B","idchip":"304582","nodevice":"2309MAS004","key":"1234567890987654321","ipa":"10.16.0.140"}
+[2023-11-16 01:42:55]
+Berhasil merespon "dariMCU_2309MAS004" : {"respon":[{"id":"304582","nodevice":"2309MAS004","message":"BMPE","info":"Benny Surahman, S.Pd, Berhasil melakukan Presensi Kegiatan [Mulai]","nokartu":"89E6663B"}]}
+Berhasil kirim balasan ke "responServer_2309MAS004"
+
+[2023-11-16 01:52:05]
+Menerima pesan dari: dariMCU_2309MAS004 - Pesan: {"nokartu":"D299852E","idchip":"304582","nodevice":"2309MAS004","key":"1234567890987654321","ipa":"10.16.0.140"}
+[2023-11-16 01:52:05]
+Berhasil merespon "dariMCU_2309MAS004" : {"respon":[{"id":"304582","nodevice":"2309MAS004","message":"BMPE","info":"Drajat Nugroho, S.Pd, Berhasil melakukan Presensi Kegiatan [Mulai]","nokartu":"D299852E"}]}
+Berhasil kirim balasan ke "responServer_2309MAS004"
+
+[2023-11-16 01:52:12]
+Menerima pesan dari: dariMCU_2309MAS004 - Pesan: {"nokartu":"05346036","idchip":"304582","nodevice":"2309MAS004","key":"1234567890987654321","ipa":"10.16.0.140"}
+[2023-11-16 01:52:12]
+Berhasil merespon "dariMCU_2309MAS004" : {"respon":[{"id":"304582","nodevice":"2309MAS004","message":"IDTT","info":"05346036, Kartu ID ini belum terdaftar","nokartu":"05346036"}]}
+Berhasil kirim balasan ke "responServer_2309MAS004"
+
+[2023-11-16 01:52:18]
+Menerima pesan dari: dariMCU_2309MAS004 - Pesan: {"nokartu":"C284ED20","idchip":"304582","nodevice":"2309MAS004","key":"1234567890987654321","ipa":"10.16.0.140"}
+[2023-11-16 01:52:18]
+Berhasil merespon "dariMCU_2309MAS004" : {"respon":[{"id":"304582","nodevice":"2309MAS004","message":"IDTT","info":"C284ED20, Kartu ID ini belum terdaftar","nokartu":"C284ED20"}]}
+Berhasil kirim balasan ke "responServer_2309MAS004"
+
+[2023-11-16 01:52:22]
+Menerima pesan dari: dariMCU_2309MAS004 - Pesan: {"nokartu":"C2BFE720","idchip":"304582","nodevice":"2309MAS004","key":"1234567890987654321","ipa":"10.16.0.140"}
+[2023-11-16 01:52:22]
+Berhasil merespon "dariMCU_2309MAS004" : {"respon":[{"id":"304582","nodevice":"2309MAS004","message":"IDTT","info":"C2BFE720, Kartu ID ini belum terdaftar","nokartu":"C2BFE720"}]}
+Berhasil kirim balasan ke "responServer_2309MAS004"
+
+[2023-11-16 03:41:10]
+Menerima pesan dari: dariMCU_2309MAS004 - Pesan: {"nokartu":"89E6663B","idchip":"304582","nodevice":"2309MAS004","key":"1234567890987654321","ipa":"10.16.0.140"}
+[2023-11-16 03:41:10]
+Berhasil merespon "dariMCU_2309MAS004" : {"respon":[{"id":"304582","nodevice":"2309MAS004","message":"BPSE","info":"Benny Surahman, S.Pd, Berhasil melakukan Presensi Kegiatan [Selesai]","nokartu":"89E6663B"}]}
+Berhasil kirim balasan ke "responServer_2309MAS004"
+

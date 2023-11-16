@@ -10,19 +10,32 @@ if (@$_SESSION['level_login'] == 'superadmin') {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Real-time Log Viewer</title>
+        <link rel="shortcut icon" href="../../../img/logoInstitusi.png" type="image/x-icon">
+        <title>Real-time Tag Log Viewer</title>
+
+        <title>Datepicker Example</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+
         <style>
             body {
                 font-family: monospace;
                 margin: 0;
-                padding: 0;
                 overflow: hidden;
                 /* Menyembunyikan scrollbar utama */
             }
 
-            h1 {
+            #header {
+                display: flex;
                 background-color: #333;
                 color: #fff;
+            }
+
+            #header img {
+                width: 50px;
+            }
+
+            h1 {
                 padding: 10px;
                 margin: 0;
             }
@@ -31,13 +44,14 @@ if (@$_SESSION['level_login'] == 'superadmin') {
                 max-height: 90vh;
                 /* Maksimalkan tinggi container sesuai tinggi layar */
                 overflow-y: auto;
-                padding: 5px;
+                margin: 10px;
                 /* Mengurangi padding */
                 background-color: #000;
                 color: #fff;
                 white-space: pre-wrap;
                 margin: 0;
                 line-height: 1;
+                border-radius: 10px 10px 10px 10px;
                 /* Menyesuaikan nilai line-height */
             }
 
@@ -66,16 +80,71 @@ if (@$_SESSION['level_login'] == 'superadmin') {
             #log-container::-webkit-scrollbar-track {
                 background-color: #f4f4f4;
             }
+
+            #inputDate {
+                margin: 2px;
+                padding: 2px;
+            }
+
+            #inputDate .form-control {
+                margin: 5px;
+                padding: 5px;
+                font-size: 18px;
+                border-radius: 10px;
+                box-shadow: #000 2px 1px;
+                text-align: center;
+            }
         </style>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     </head>
 
-    <body>
+    <body onload="getDataValue();">
 
-        <h1>Real-time Log Viewer</h1>
+        <div id="header">
+            <img src="../../../img/app/rfid-unscreen.gif" alt="">
+            <h1>
+                Real-time Tag-RFID Log Viewer
+            </h1>
+            <div id="inputDate">
+                <input type="date" class="" name="getdate" id="date-value" onchange="getDataValue();">
+            </div>
+        </div>
+
         <div id="log-container"></div>
 
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
         <script>
+            var selectedDate = "";
+
+            function getDataValue() {
+                var dateInput = document.getElementById("date-value");
+                var dateInputflic = document.querySelector(".form-control");
+
+                selectedDate = dateInput.value;
+
+                if (!selectedDate) {
+                    var today = new Date();
+                    var year = today.getFullYear();
+                    var month = String(today.getMonth() + 1).padStart(2, '0');
+                    var day = String(today.getDate()).padStart(2, '0');
+
+                    selectedDate = year + '-' + month + '-' + day;
+                    dateInput.value = selectedDate;
+                    // dateInputflic.value = selectedDate;
+
+                    flatpickr("#date-value", {
+                        altInput: true,
+                        altFormat: "j F Y",
+                        // altFormat: 'd/m/Y',
+                        dateFormat: "Y-m-d",
+                    });
+                }
+
+                console.log("selected Date: ", selectedDate);
+                console.log("dateInputflic.value Date: ", dateInputflic.value);
+            }
+
             $(document).ready(function() {
                 var currentLogLength = 0;
 
@@ -86,9 +155,15 @@ if (@$_SESSION['level_login'] == 'superadmin') {
 
                 function fetchLog() {
                     $.ajax({
-                        url: 'get_log.php',
+                        url: 'get_log.php?date=' + selectedDate,
                         success: function(data) {
                             var newLogLength = data.length;
+
+                            if (!newLogLength) {
+                                alert("tidak ada data untuk tanggal " + selectedDate);
+                                selectedDate = "";
+                                location.reload();
+                            }
 
                             if (newLogLength !== currentLogLength) {
                                 // Wrap each formatted line in a div with the class 'log-line'
@@ -110,7 +185,6 @@ if (@$_SESSION['level_login'] == 'superadmin') {
                 fetchLog();
             });
         </script>
-
     </body>
 
     </html>

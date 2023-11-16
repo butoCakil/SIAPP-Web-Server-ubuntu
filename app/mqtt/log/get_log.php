@@ -1,10 +1,20 @@
 <?php
-date_default_timezone_set('Asia/Jakarta');
-$tanggal = date('Y-m-d');
-$getTanggal = @$_GET['date'];
+$subDir = 2;
+include "../../../beranda/app/get_user.php";
+if (@$_SESSION['level_login'] == 'superadmin') {
 
-$tanggal = $getTanggal ? $getTanggal : $tanggal;
+    date_default_timezone_set('Asia/Jakarta');
+    $tanggal = date('Y-m-d');
+    $getTanggal = @$_GET['date'];
 
-$logFile = "tag_$tanggal.log";
-$logContent = file_get_contents($logFile);
-echo nl2br($logContent);
+    $tanggal = $getTanggal ? $getTanggal : $tanggal;
+
+    $logFile = "tag_$tanggal.log";
+    $logContent = file_get_contents($logFile);
+    echo nl2br($logContent);
+} else { ?>
+    <script>
+        alert("ilegal akses");
+        window.location.href = "../../../";
+    </script>
+<?php } ?>
