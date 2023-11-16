@@ -162,6 +162,7 @@ if (@$_SESSION['pesan']) {
                     <?php } elseif (@$_GET['s'] == 'livetag') { ?>
                         <div class="" style="height: 400px;">
                             <div id="cektag"></div>
+                            <a href="/app/mqtt/log/" style="display: block; text-align: right; color: #eee6e6; font-style: italic; text-decoration: none;">lihat detail...</a>
                         </div>
                         <!-- Riwayat Presensi List -->
                     <?php } elseif (@$_GET['s'] == 'listrecord') { ?>
