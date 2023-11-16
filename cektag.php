@@ -1,4 +1,4 @@
-<!-- Memeriksa setiap TAG yang masuk dihalaman index.php -->
+<!-- Memeriksa setiap TAG yang masuk dihalaman index -->
 <div class="cektag">
     <?php
     include "config/konesi.php";

@@ -57,5 +57,5 @@ if ($level_login == 'admin' || $level_login == 'superadmin') {
     </script>
 <?php } else {
 
-    echo '<script>window.location.href="index.php";</script>';
+    echo '<script>window.location.href="../";</script>';
 } ?>

@@ -16,17 +16,17 @@ if ($_POST['login']) {
 
     if (!$email) {
         $_SESSION['pesan_error'] = 'Email tidak boleh kosong!';
-        header("Location: index.php");
+        header("Location: ../");
     } elseif (!$oripass) {
         $_SESSION['pesan_error'] = 'Password tidak boleh kosong!';
-        header("Location: index.php");
+        header("Location: ../");
     } elseif (strlen($oripass) < 4) {
         $_SESSION['pesan_error'] = 'Password minimal 4 karakter!';
-        header("Location: index.php");
+        header("Location: ../");
     } else {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['pesan_error'] = 'Email tidak valid!';
-            header("Location: index.php");
+            header("Location: ../");
         } else {
 
             // Prepare the SELECT statement to retrieve data from the 'admin' table
@@ -62,7 +62,7 @@ if ($_POST['login']) {
                     header("Location: beranda/statistik.php");
                 } else {
                     $_SESSION['pesan_error'] = 'Password salah!';
-                    header("Location: index.php");
+                    header("Location: ../");
                 }
             } else {
                 // Handle the case for non-admin users
@@ -102,7 +102,7 @@ if ($_POST['login']) {
                         header("Location: beranda");
                     } else {
                         $_SESSION['pesan_error'] = $row['nama'] . ', Password Anda salah!';
-                        header("Location: index.php");
+                        header("Location: ../");
                     }
                 } else {
 
@@ -141,11 +141,11 @@ if ($_POST['login']) {
                             header("Location: beranda");
                         } else {
                             $_SESSION['pesan_error'] = $row['nama'] . ', Passwordmu salah!';
-                            header("Location: index.php");
+                            header("Location: ../");
                         }
                     } else {
                         $_SESSION['pesan_error'] = 'Username tidak ditemukan!';
-                        header("Location: index.php");
+                        header("Location: ../");
                     }
                 }
             }
@@ -172,8 +172,7 @@ if ($_POST['login']) {
     }
 
     mysqli_close($konek);
-
 } else {
     $_SESSION['pesan_error'] = 'Silahkan login terlebih dahulu!';
-    header("Location: index.php");
+    header("Location: ../");
 }

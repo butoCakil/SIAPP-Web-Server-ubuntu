@@ -60,4 +60,4 @@ session_destroy();
 session_start();
 $_SESSION['pesan'] = $pesan;
 
-header("Location: index.php");
+header("Location: ../");

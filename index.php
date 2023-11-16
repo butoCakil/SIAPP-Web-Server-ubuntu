@@ -588,7 +588,7 @@ if (@$_SESSION['pesan']) {
                     </div>
                     <hr>
                     <div class="mt-2 text-center">
-                        <a href="index.php" class="btn btn-dark btn-sm border-0 rounded-pill">
+                        <a href="../" class="btn btn-dark btn-sm border-0 rounded-pill">
                             << Kembali</a>
                                 <?php if ($akses_login == "admin") { ?>
                                     <a href="?s=livetag" class="btn btn-outline-light btn-sm rounded-pill">🔴&nbsp;Live&nbsp;Tag</a>

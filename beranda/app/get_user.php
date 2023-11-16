@@ -32,9 +32,9 @@ if (@$_SESSION['username_login']) {
 } else {
     // echo 'tidak ada';
     $link_login = '<a id="ketupat_tmbl_1" href="../" class="btn btn-success shadow_gradient_1" data-bs-toggle="modal" data-bs-target="#login" style="cursor: pointer;"><b><i>Log in</i></b></a>';
-    $pesan = 'Telah keluar dari Akun Anda.' . '<br>' . 'Silahkan ' . $link_login . ' untuk masuk kembali.';
+    $pesan = 'Telah keluar dari Akun Anda.' . '<br>' . 'Silahkan ' . $link_login;
     $_SESSION['pesan_error'] = $pesan;
-    header("Location: $dir../index.php");
+    header("Location: $dir../");
 }
 
 if (@$nokartu_login) {
@@ -43,6 +43,6 @@ if (@$nokartu_login) {
     $data_user = mysqli_fetch_array($query2);
 } else {
     if ($level_login != "superadmin") {
-        header("Location: $dir../index.php");
+        header("Location: $dir../");
     }
 }

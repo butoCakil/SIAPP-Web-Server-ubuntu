@@ -220,4 +220,4 @@ if (isset($_POST['login'])) {
 mysqli_close($konek);
 
 $_SESSION['login'] = true;
-header("Location: index.php");
+header("Location: ../");

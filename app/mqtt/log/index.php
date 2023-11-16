@@ -21,6 +21,7 @@ if (@$_SESSION['level_login'] == 'superadmin') {
             body {
                 font-family: monospace;
                 margin: 0;
+                padding: 0;
                 overflow: hidden;
                 /* Menyembunyikan scrollbar utama */
             }
@@ -29,6 +30,7 @@ if (@$_SESSION['level_login'] == 'superadmin') {
                 display: flex;
                 background-color: #333;
                 color: #fff;
+                box-shadow: 2px 5px 5px #000;
             }
 
             #header img {
@@ -40,18 +42,27 @@ if (@$_SESSION['level_login'] == 'superadmin') {
                 margin: 0;
             }
 
+            #viewbox {
+                max-height: 100vh;
+                padding: 0px 10px 10px 10px;
+                background-color: #888;
+                background-image: linear-gradient(to top, #888, #eee);
+                border-radius: 0px 0px 10px 10px;
+                box-shadow: 2px 2px 5px #000;
+            }
+
             #log-container {
                 max-height: 90vh;
                 /* Maksimalkan tinggi container sesuai tinggi layar */
                 overflow-y: auto;
-                margin: 10px;
                 /* Mengurangi padding */
                 background-color: #000;
                 color: #fff;
                 white-space: pre-wrap;
                 margin: 0;
+                padding-left: 10px;
                 line-height: 1;
-                border-radius: 10px 10px 10px 10px;
+                border-radius: 0px 0px 10px 10px;
                 /* Menyesuaikan nilai line-height */
             }
 
@@ -73,7 +84,7 @@ if (@$_SESSION['level_login'] == 'superadmin') {
             }
 
             #log-container::-webkit-scrollbar-thumb {
-                background-color: #888;
+                background-color: midnightblue;
                 border-radius: 5px;
             }
 
@@ -94,6 +105,42 @@ if (@$_SESSION['level_login'] == 'superadmin') {
                 box-shadow: #000 2px 1px;
                 text-align: center;
             }
+
+            #inputDate .flatpickr-mobile {
+                margin: 5px;
+                padding: 5px;
+                font-size: 12px;
+                border-radius: 10px;
+                box-shadow: #000 2px 1px;
+                text-align: center;
+            }
+
+            @media only screen and (max-width: 768px) {
+                #header {
+                    display: flex;
+                    flex-direction: column;
+                    text-align: center;
+                }
+
+                #header img {
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+
+                h1 {
+                    font-size: 12px;
+                }
+
+                #inputDate .flatpickr-mobile {
+                    margin: 5px;
+                    padding: 5px;
+                    font-size: 12px;
+                    border-radius: 10px;
+                    box-shadow: #000 2px 1px;
+                    text-align: center;
+                }
+            }
         </style>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     </head>
@@ -110,7 +157,9 @@ if (@$_SESSION['level_login'] == 'superadmin') {
             </div>
         </div>
 
-        <div id="log-container"></div>
+        <div id="viewbox">
+            <div id="log-container"></div>
+        </div>
 
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -119,7 +168,6 @@ if (@$_SESSION['level_login'] == 'superadmin') {
 
             function getDataValue() {
                 var dateInput = document.getElementById("date-value");
-                var dateInputflic = document.querySelector(".form-control");
 
                 selectedDate = dateInput.value;
 
@@ -131,18 +179,13 @@ if (@$_SESSION['level_login'] == 'superadmin') {
 
                     selectedDate = year + '-' + month + '-' + day;
                     dateInput.value = selectedDate;
-                    // dateInputflic.value = selectedDate;
 
                     flatpickr("#date-value", {
                         altInput: true,
                         altFormat: "j F Y",
-                        // altFormat: 'd/m/Y',
                         dateFormat: "Y-m-d",
                     });
                 }
-
-                console.log("selected Date: ", selectedDate);
-                console.log("dateInputflic.value Date: ", dateInputflic.value);
             }
 
             $(document).ready(function() {
