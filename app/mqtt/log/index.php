@@ -115,6 +115,22 @@ if (@$_SESSION['level_login'] == 'superadmin') {
                 text-align: center;
             }
 
+            .btn-back-link {
+                position: absolute;
+                right: 0;
+                margin-top: 20px;
+                margin-right: 10px;
+            }
+
+            .btn-back-link-name {
+                color: #555;
+                text-decoration: none;
+                background-color: #eee;
+                border-radius: 5px;
+                padding: 5px;
+                text-align: center;
+            }
+
             @media only screen and (max-width: 768px) {
                 #header {
                     display: flex;
@@ -154,6 +170,9 @@ if (@$_SESSION['level_login'] == 'superadmin') {
             </h1>
             <div id="inputDate">
                 <input type="date" class="" name="getdate" id="date-value" onchange="getDataValue();">
+            </div>
+            <div class="btn-back-link">
+                <a href="../../../" class="btn-back-link-name">Kembali</a>
             </div>
         </div>
 
