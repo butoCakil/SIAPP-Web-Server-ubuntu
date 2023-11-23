@@ -26,7 +26,7 @@ $nama_guru = "";
 $selisih_waktu = 0;
 
 if (!isSafeInput($nokartu) || !isSafeInput($idchip) || !isSafeInput($nodevice)) {
-    die("Program dihentikan karena karakter mencurigakan ditemukan.");
+    die("[0x20] Program dihentikan karena karakter mencurigakan ditemukan.");
 }
 
 // Jika ada nomor kartu
@@ -492,87 +492,46 @@ if ($nokartu) {
                             $pesan = "HLTM";
                         }
                     } elseif ($hasil_kode_device == "MASJID") {
-                        // Ambil data
-                        // Cek apakah sebelumnya telah melakukan Presensi?
+                        // Melihat waktu
+                        // apakah waktu diantara jam 11.45 - 1.15
+                        $batasMulai = "11:45:00";
+                        $batasSelesai = "13:30:00";
 
-                        // Membuat prepared statement
-                        $stmt = mysqli_stmt_init($konek);
-                        if (mysqli_stmt_prepare($stmt, "SELECT * FROM `presensiEvent` WHERE `nokartu` = ? AND `tanggal` = ? ORDER BY `timestamp` DESC LIMIT 1")) {
-                            mysqli_stmt_bind_param(
-                                $stmt,
-                                "ss",
-                                $nokartu_clean,
-                                $tanggal
-                            );
-                            mysqli_stmt_execute($stmt);
-                            $result = mysqli_stmt_get_result($stmt);
+                        if (strtotime($jam) > strtotime($batasMulai) && strtotime($jam) < strtotime($batasSelesai)) {
 
-                            // Memeriksa apakah ada data yang cocok
-                            if ($row = mysqli_fetch_assoc($result)) {
-                                $waktu_sekarang = strtotime($jam);
-                                $timestamp_event = $row['timestamp'];
+                            // Ambil data
+                            // Cek apakah sebelumnya telah melakukan Presensi?
 
-                                // Cek APakah `mulai` dan `selesai` sudah terisi?
-                                if ($row['mulai'] && $row['selesai']) {
-                                    // jika semua sudah terisi semua (`mulai` dan `selesai`)
-                                    // cek waktu
-                                    $waktu_selesai = strtotime($row['selesai']);
+                            // Membuat prepared statement
+                            $stmt = mysqli_stmt_init($konek);
+                            if (mysqli_stmt_prepare($stmt, "SELECT * FROM `presensiEvent` WHERE `nokartu` = ? AND `tanggal` = ? ORDER BY `timestamp` DESC LIMIT 1")) {
+                                mysqli_stmt_bind_param(
+                                    $stmt,
+                                    "ss",
+                                    $nokartu_clean,
+                                    $tanggal
+                                );
+                                mysqli_stmt_execute($stmt);
+                                $result = mysqli_stmt_get_result($stmt);
 
-                                    // Hitung selisih waktu dalam detik
-                                    $selisih_waktu = $waktu_sekarang - $waktu_selesai;
+                                // Memeriksa apakah ada data yang cocok
+                                if ($row = mysqli_fetch_assoc($result)) {
+                                    $waktu_sekarang = strtotime($jam);
+                                    $timestamp_event = $row['timestamp'];
 
-                                    if ($selisih_waktu > 300) {
-                                        // Jika sudah 5 menit maka insert data (row) baru
-                                        $stmt = mysqli_stmt_init($konek);
-                                        if (mysqli_stmt_prepare($stmt, "INSERT INTO presensiEvent (nokartu, nis, ruang, mulai, jam, tanggal, keterangan) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
-                                            mysqli_stmt_bind_param(
-                                                $stmt,
-                                                "sssssss",
-                                                $nokartu_clean,
-                                                $ni,
-                                                $hasil_info_device,
-                                                $jam,
-                                                $jam,
-                                                $tanggal,
-                                                $hasil_kode_device
-                                            );
-                                            mysqli_stmt_execute($stmt);
+                                    // Cek APakah `mulai` dan `selesai` sudah terisi?
+                                    if ($row['mulai'] && $row['selesai']) {
+                                        // jika semua sudah terisi semua (`mulai` dan `selesai`)
+                                        // cek waktu
+                                        $waktu_selesai = strtotime($row['selesai']);
 
-                                            $pesan = "BPEB";
-                                        } else {
-                                            $pesan = "545";
-                                        }
-                                    } else {
-                                        $pesan = "510";
-                                    }
-                                } else {
-                                    // Data sudah ada, tapi belum `selesai`, maka lakukan UPDATE
-                                    $waktu_mulai = strtotime($row['mulai']);
-                                    $waktu_tanggal = strtotime($row['tanggal']);
+                                        // Hitung selisih waktu dalam detik
+                                        $selisih_waktu = $waktu_sekarang - $waktu_selesai;
 
-                                    // Hitung selisih waktu dalam detik
-                                    $selisih_waktu = $waktu_sekarang - $waktu_mulai;
-
-                                    if ($selisih_waktu > 120) {
-                                        if (strtotime($tanggal) == ($waktu_tanggal)) { // 300 detik = 5 menit
+                                        if ($selisih_waktu > 300) {
+                                            // Jika sudah 5 menit maka insert data (row) baru
                                             $stmt = mysqli_stmt_init($konek);
-                                            if (mysqli_stmt_prepare($stmt, "UPDATE presensiEvent SET selesai = ? WHERE nokartu = ? AND `timestamp` = ?")) {
-                                                mysqli_stmt_bind_param(
-                                                    $stmt,
-                                                    "sss",
-                                                    $jam,
-                                                    $nokartu_clean,
-                                                    $timestamp_event
-                                                );
-                                                mysqli_stmt_execute($stmt);
-
-                                                $pesan = "BPSE";
-                                            } else {
-                                                $pesan = "555";
-                                            }
-                                        } else {
-                                            $stmt = mysqli_stmt_init($konek);
-                                            if (mysqli_stmt_prepare($stmt, "INSERT INTO presensiEvent (nokartu, nis, ruang, selesai, jam, tanggal, keterangan) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+                                            if (mysqli_stmt_prepare($stmt, "INSERT INTO presensiEvent (nokartu, nis, ruang, mulai, jam, tanggal, keterangan) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
                                                 mysqli_stmt_bind_param(
                                                     $stmt,
                                                     "sssssss",
@@ -590,38 +549,89 @@ if ($nokartu) {
                                             } else {
                                                 $pesan = "545";
                                             }
+                                        } else {
+                                            $pesan = "510";
                                         }
                                     } else {
-                                        $pesan = "510";
+                                        // Data sudah ada, tapi belum `selesai`, maka lakukan UPDATE
+                                        $waktu_mulai = strtotime($row['mulai']);
+                                        $waktu_tanggal = strtotime($row['tanggal']);
+
+                                        // Hitung selisih waktu dalam detik
+                                        $selisih_waktu = $waktu_sekarang - $waktu_mulai;
+
+                                        if ($selisih_waktu > 120) {
+                                            if (strtotime($tanggal) == ($waktu_tanggal)) { // 300 detik = 5 menit
+                                                $stmt = mysqli_stmt_init($konek);
+                                                if (mysqli_stmt_prepare($stmt, "UPDATE presensiEvent SET selesai = ? WHERE nokartu = ? AND `timestamp` = ?")) {
+                                                    mysqli_stmt_bind_param(
+                                                        $stmt,
+                                                        "sss",
+                                                        $jam,
+                                                        $nokartu_clean,
+                                                        $timestamp_event
+                                                    );
+                                                    mysqli_stmt_execute($stmt);
+
+                                                    $pesan = "BPSE";
+                                                } else {
+                                                    $pesan = "555";
+                                                }
+                                            } else {
+                                                $stmt = mysqli_stmt_init($konek);
+                                                if (mysqli_stmt_prepare($stmt, "INSERT INTO presensiEvent (nokartu, nis, ruang, selesai, jam, tanggal, keterangan) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+                                                    mysqli_stmt_bind_param(
+                                                        $stmt,
+                                                        "sssssss",
+                                                        $nokartu_clean,
+                                                        $ni,
+                                                        $hasil_info_device,
+                                                        $jam,
+                                                        $jam,
+                                                        $tanggal,
+                                                        $hasil_kode_device
+                                                    );
+                                                    mysqli_stmt_execute($stmt);
+
+                                                    $pesan = "BPEB";
+                                                } else {
+                                                    $pesan = "545";
+                                                }
+                                            }
+                                        } else {
+                                            $pesan = "510";
+                                        }
+                                    }
+                                } else {
+                                    // Data belum ada, maka lakukan INSERT
+                                    $stmt = mysqli_stmt_init($konek);
+                                    if (mysqli_stmt_prepare($stmt, "INSERT INTO presensiEvent (nokartu, nis, ruang, mulai, jam, tanggal, keterangan) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+                                        mysqli_stmt_bind_param(
+                                            $stmt,
+                                            "sssssss",
+                                            $nokartu_clean,
+                                            $ni,
+                                            $hasil_info_device,
+                                            $jam,
+                                            $jam,
+                                            $tanggal,
+                                            $hasil_kode_device
+                                        );
+                                        mysqli_stmt_execute($stmt);
+
+                                        $pesan = "BMPE";
+                                    } else {
+                                        $pesan = "545";
                                     }
                                 }
+
+                                // Tutup prepared statement
+                                mysqli_stmt_close($stmt);
                             } else {
-                                // Data belum ada, maka lakukan INSERT
-                                $stmt = mysqli_stmt_init($konek);
-                                if (mysqli_stmt_prepare($stmt, "INSERT INTO presensiEvent (nokartu, nis, ruang, mulai, jam, tanggal, keterangan) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
-                                    mysqli_stmt_bind_param(
-                                        $stmt,
-                                        "sssssss",
-                                        $nokartu_clean,
-                                        $ni,
-                                        $hasil_info_device,
-                                        $jam,
-                                        $jam,
-                                        $tanggal,
-                                        $hasil_kode_device
-                                    );
-                                    mysqli_stmt_execute($stmt);
-
-                                    $pesan = "BMPE";
-                                } else {
-                                    $pesan = "545";
-                                }
+                                $pesan = "505";
                             }
-
-                            // Tutup prepared statement
-                            mysqli_stmt_close($stmt);
                         } else {
-                            $pesan = "505";
+                            $pesan = "TBPS";
                         }
                     } elseif ($hasil_kode_device == "EVENT") {
                         // Ambil data
@@ -1011,30 +1021,31 @@ if ($nokartu) {
 
 // beri feedback
 $info_kode_array = array(
-    "404" => "ERROR! Method Not Allowed.",
-    "405" => "ERROR! REQ TIDAK DI IJINKAN",
-    "406" => "ERROR! CHIP TIDAK TERDAFTAR",
-    "407" => "ERROR! DEVICE TIDAK SESUAI",
-    "505" => "ERROR! DATABASE SERVER: " . mysqli_error($konek),
-    "510" =>  @$nama . ": TELAH TERCATAT! " . $selisih_waktu . " dtk lalu",
-    "545" => "ERROR! DATABASE SERVER INSERT: " . mysqli_error($konek),
-    "555" => "ERROR! DATABASE SERVER UPDTAE: " . mysqli_error($konek),
-    "IDTT" => "$sub_pesan, Kartu ID ini belum terdaftar",
-    "HLTM" => @$nama . ", " . "Hari ini Libur",
-    "TBPS" => @$nama . ", " . "Tidak bisa melakukan presensi sekarang.",
-    "SAPP" => @$nama . ", " . "Sudah melakukan presensi pulang",
-    "PLAW" => @$nama . ", " . "Pulang lebih awal",
-    "PPBH" => @$nama . ", " . "Presensi Pulang berhasil",
-    "PPPP" => @$nama . ", " . @$keterangan,
-    "SMPM" => @$nama . ", " . "Anda Sudah melakukan Presensi",
-    "MMMM" => @$nama . ", " . @$keterangan,
-    "BMPM" => @$nama . ", " . "Berhasil melakukan Presensi",
-    "PKBD" => @$nama . ", " . "Berhasil melakukan Presensi Kelas: " . @$jadwal_ruangan,
-    "TAKS" => @$nama . ", " . "Tidak Ada KBM di Kelas: " . @$hasil_info_device,
-    "BMPE" => @$nama . ", " . "Berhasil melakukan Presensi Kegiatan [Mulai]",
-    "BPSE" => @$nama . ", " . "Berhasil melakukan Presensi Kegiatan [Selesai]",
-    "BPEB" => @$nama . ", " . "Berhasil melakukan Presensi Kegiatan [Mulai - Baru]",
-    "BMIJ" => @$nama . ", " . "Berhasil melakukan Ijin",
+    "404" => "ERROR!--Method Not Allowed.",
+    "405" => "ERROR!--REQ TIDAK DI IJINKAN",
+    "406" => "ERROR!--CHIP TIDAK TERDAFTAR",
+    "407" => "ERROR!--DEVICE TIDAK SESUAI",
+    "505" => "ERROR!--DATABASE SERVER: " . mysqli_error($konek),
+    "510" =>  @$nama . "--TERCATAT! " . $selisih_waktu . " dtk lalu",
+    "545" => "ERROR!--DATABASE SERVER INSERT: " . mysqli_error($konek),
+    "555" => "ERROR!--DATABASE SERVER UPDTAE: " . mysqli_error($konek),
+    // "IDTT" => "$sub_pesan--Kartu ID ini belum terdaftar",
+    "IDTT" => "Kartu ID ini--belum terdaftar",
+    "HLTM" => @$nama . "--" . "Hari ini Libur",
+    "TBPS" => @$nama . "--" . "Tidak bisa melakukan presensi sekarang.",
+    "SAPP" => @$nama . "--" . "Sudah melakukan presensi pulang",
+    "PLAW" => @$nama . "--" . "Pulang lebih awal",
+    "PPBH" => @$nama . "--" . "Berhasil Presensi Pulang",
+    "PPPP" => @$nama . "--" . @$keterangan,
+    "SMPM" => @$nama . "--" . "Anda Sudah melakukan Presensi",
+    "MMMM" => @$nama . "--" . @$keterangan,
+    "BMPM" => @$nama . "--" . "Berhasil Presensi",
+    "PKBD" => @$nama . "--" . "Berhasil Presensi Kelas: " . @$jadwal_ruangan,
+    "TAKS" => @$nama . "--" . "Tidak Ada KBM di Kelas: " . @$hasil_info_device,
+    "BMPE" => @$nama . "--" . "Berhasil Presensi -Mulai-",
+    "BPSE" => @$nama . "--" . "Berhasil Presensi -Selesai-",
+    "BPEB" => @$nama . "--" . "Berhasil Presensi -Mulai Baru-",
+    "BMIJ" => @$nama . "--" . "Ijin Berhasil",
 );
 
 $array = array(
@@ -1060,7 +1071,7 @@ $array = array();
 $ip_a = isset($_GET['ipa']) ? $_GET['ipa'] : null;
 
 if (!isSafeInput2($ip_a)) {
-    die("Program dihentikan karena karakter mencurigakan ditemukan.");
+    die("[0x01] Program dihentikan karena karakter mencurigakan ditemukan.");
 }
 
 if (!$ip_a) {
