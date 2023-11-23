@@ -1,0 +1,12 @@
+[2023-11-24 00:05:05]
+Menerima pesan dari: dariMCU_2309G005 - Pesan: {"nokartu":"13197D05","idchip":"7863851","nodevice":"2309G005","key":"1234567890987654321","ipa":"10.16.0.160"}
+[2023-11-24 00:05:05]
+Berhasil merespon "dariMCU_2309G005" : {"respon":[{"id":"7863851","nodevice":"2309G005","message":"IDTT","info":"Kartu ID ini--belum terdaftar","nokartu":"13197D05"}]}
+Berhasil kirim balasan ke "responServer_2309G005"
+
+[2023-11-24 00:05:14]
+Menerima pesan dari: dariMCU_2309G005 - Pesan: {"nokartu":"4D4FF96A","idchip":"7863851","nodevice":"2309G005","key":"1234567890987654321","ipa":"10.16.0.160"}
+[2023-11-24 00:05:14]
+Berhasil merespon "dariMCU_2309G005" : {"respon":[{"id":"7863851","nodevice":"2309G005","message":"TBPS","info":"Agus Priyono, S.Kom--Tidak bisa melakukan presensi sekarang.","nokartu":"4D4FF96A"}]}
+Berhasil kirim balasan ke "responServer_2309G005"
+
