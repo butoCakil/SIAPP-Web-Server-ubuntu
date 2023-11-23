@@ -11,8 +11,8 @@
     # RewriteRule .* - [F]
 
     # Block access to admin directory
-    RewriteCond %{REQUEST_URI} ^/css/ [NC]
-    RewriteRule .* - [F]
+    # RewriteCond %{REQUEST_URI} ^/css/ [NC]
+    # RewriteRule .* - [F]
 
     # Block access to sensitive-file.txt
     # RewriteCond %{REQUEST_URI} ^/sensitive-file\.txt [NC]
