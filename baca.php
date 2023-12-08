@@ -1,5 +1,6 @@
 <?php
-error_reporting(E_ALL);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 //tanggal dan jam hari ini
 date_default_timezone_set('Asia/Jakarta');
@@ -9,6 +10,7 @@ $jam     = date('H:i:s');
 
 // Konek database
 include('config/konesi.php');
+// echo "test";
 
 // Ambil data dari tabel statusnya
 $query_select_statusnya = "SELECT * FROM statusnya";
@@ -162,11 +164,11 @@ if ($harilibur == false) {
                 // echo "ditemukan: " . $nama_gtk;
                 // ambil datanya
                 $nama = $nama_gtk;
-                $foto = $datagtk['foto'];
-                $info = $datagtk['jabatan'];
-                $keterangan = $datagtk['keterangan'];
-                $tglakhir = $datagtk['tglakhirdispo'];
-                $kode = $datagtk['kode'];
+                $foto = @$datagtk['foto'];
+                $info = @$datagtk['jabatan'];
+                $keterangan = @$datagtk['keterangan'];
+                $tglakhir = @$datagtk['tglakhirdispo'];
+                $kode = @$datagtk['kode'];
                 // echo($nama . $foto . $info . $keterangan . $tglakhir);
 
 
@@ -193,11 +195,11 @@ if ($harilibur == false) {
                 // echo "detemukan: " . $nama_siswa;
                 // ambil datanya
                 $nama = $nama_siswa;
-                $foto = $data_siswa['foto'];
-                $info = $data_siswa['kelas'];
-                $keterangan = $data_siswa['keterangan'];
-                $tglakhir = $data_siswa['tglakhir'];
-                $kode = $data_siswa['kode'];
+                $foto = @$data_siswa['foto'];
+                $info = @$data_siswa['kelas'];
+                $keterangan = @$data_siswa['keterangan'];
+                $tglakhir = @$data_siswa['tglakhir'];
+                $kode = @$data_siswa['kode'];
                 // echo($nama . $foto . $info . $keterangan . $tglakhir);
 
                 // jika tanggal ijin/disposisi telah berlalu/berakhir
@@ -397,16 +399,19 @@ if ($harilibur == false) {
 
 // die;
 // menghapus nomorkartu di tmprfid
+include("config/konesi.php");
 $query_delete_tmprfid = "DELETE FROM tmprfid";
-$stmt_delete_tmprfid = mysqli_stmt_init($konek);
-mysqli_stmt_prepare($stmt_delete_tmprfid, $query_delete_tmprfid);
-$delete = mysqli_stmt_execute($stmt_delete_tmprfid);
+$delete = mysqli_query($konek, $query_delete_tmprfid);
 
-// if ($sql) {
-// echo "berhasil dihapus nokartu di tmprfid";
-// } else {
-// echo "gagal hapus";
-// }
+// $stmt_delete_tmprfid = mysqli_stmt_init($konek);
+// mysqli_stmt_prepare($stmt_delete_tmprfid, $query_delete_tmprfid);
+// $delete = mysqli_stmt_execute($stmt_delete_tmprfid);
+
+if ($delete) {
+    // echo "berhasil dihapus nokartu di tmprfid";
+} else {
+    echo "Error tmprfid 0x00EE";
+}
 
 // echo '<br>';
 // echo 'nokartu: ';
@@ -420,7 +425,7 @@ mysqli_stmt_close(@$stmt_select_statusnya);
 mysqli_stmt_close(@$stmt_select_setting_waktu);
 mysqli_stmt_close(@$stmt_select_nokartu_tmprfid);
 mysqli_stmt_close(@$stmt_update_statusnya);
-mysqli_stmt_close(@$stmt_delete_tmprfid);
+// mysqli_stmt_close(@$stmt_delete_tmprfid);
 
 if (@$stmt_check_guru) {
     mysqli_stmt_close(@$stmt_check_guru);
@@ -448,9 +453,6 @@ if (@$stmt_insert_datapresensi) {
 }
 if (@$stmt_select_datapresensi) {
     mysqli_stmt_close(@$stmt_select_datapresensi);
-}
-if (@$stmt_insert_datapresensi) {
-    mysqli_stmt_close(@$stmt_insert_datapresensi);
 }
 if (@$stmt_update_datapresensi) {
     mysqli_stmt_close(@$stmt_update_datapresensi);
