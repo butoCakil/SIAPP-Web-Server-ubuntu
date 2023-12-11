@@ -9,7 +9,7 @@ if (@$_SESSION['level_login'] == 'superadmin') {
 
     $tanggal = $getTanggal ? $getTanggal : $tanggal;
 
-    $logFile = "tag_$tanggal.log";
+    $logFile = "log/tag_$tanggal.log";
     $logContent = file_get_contents($logFile);
     echo nl2br($logContent);
 } else { ?>

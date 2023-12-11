@@ -42,7 +42,7 @@ echo $text_log;
 $tanggal = date("Y-m-d");
 
 // Direktori penyimpanan file log (ganti dengan direktori yang diinginkan)
-$lokasi_penyimpanan = "/opt/lampp/htdocs/app/mqtt/log/";
+$lokasi_penyimpanan = "/opt/lampp/htdocs/app/mqtt/log/log/";
 
 // Nama file log
 $nama_file_log = $lokasi_penyimpanan . "tag_" . $tanggal . ".log";
