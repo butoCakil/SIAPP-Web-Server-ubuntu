@@ -9,6 +9,9 @@ $timestamp = date('Y-m-d H:i:s');
 $tanggal = date('Y-m-d');
 $jam     = date('H:i:s');
 
+// Mendapatkan hari dalam bahasa Inggris
+// $hari_eng = date('D', $timestamp);
+
 header('Content-Type: application/json');
 //baca nomor kartu dari NodeMCU
 $nokartu = @$_GET['nokartu'];
@@ -113,7 +116,7 @@ if ($nokartu) {
                         $nama_gtk = $row['nama'];
                         $nip_gtk = $row['nip'];
                         $noReg_gtk = @$row['nik'];
-                        $foto_gtk = @$row['foto'] ? $row['foto'] : "default.jpg";
+                        $foto_gtk = @$row['foto'] ? @$row['foto'] : "default.jpg";
                         $info_gtk = @$row['jabatan'];
                         $keterangan_gtk = @$row['keterangan'];
                         $tglakhir_gtk = @$row['tglakhirdispo'];
@@ -157,7 +160,7 @@ if ($nokartu) {
                     $nama = @$nama_gtk ? $nama_gtk : $nama_siswa;
                     $ni = @$nip_gtk ? $nip_gtk : $nis_siswa;
                     $noReg = @$nip_gtk ? $nip_gtk : $nis_siswa;
-                    $foto = @$foto_gtk ? $foto_gtk : @$foto_siswa;
+                    $foto = @$foto_gtk ? $foto_gtk : (@$foto_siswa ? $foto_siswa : 'default.jpg');
                     $info = @$info_gtk ? $info_gtk : @$info_siswa;
                     $keterangan = @$keterangan_gtk ? $keterangan_gtk : @$keterangan_siswa;
                     $tglakhir = @$tglakhir_gtk ? $tglakhir_gtk : @$tglakhir_siswa;
@@ -356,13 +359,17 @@ if ($nokartu) {
                                             }
                                         }
 
+                                        $data_waktupulang = "00:00:00";
+                                        $data_ketpulang = "-";
+                                        $data_btime = "00:00:00";
+
                                         // buat data di database datapresensi
-                                        $query_insert_datapresensi = "INSERT INTO datapresensi (nokartu, nama, nomorinduk, info, foto, waktumasuk, ketmasuk, a_time, tanggal, keterangan, updated_at, kode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                        $query_insert_datapresensi = "INSERT INTO datapresensi (nokartu, nama, nomorinduk, info, foto, waktumasuk, ketmasuk, a_time, waktupulang, ketpulang, b_time, tanggal, keterangan, updated_at, kode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                                         $stmt_insert_datapresensi = mysqli_stmt_init($konek);
                                         mysqli_stmt_prepare($stmt_insert_datapresensi, $query_insert_datapresensi);
                                         mysqli_stmt_bind_param(
                                             $stmt_insert_datapresensi,
-                                            "ssssssssssss",
+                                            "sssssssssssssss",
                                             $nokartu_clean,
                                             $nama,
                                             $noReg,
@@ -371,6 +378,9 @@ if ($nokartu) {
                                             $jam,
                                             $ket,
                                             $selisihWaktu,
+                                            $data_waktupulang,
+                                            $data_ketpulang,
+                                            $data_btime,
                                             $tanggal,
                                             $keterangan,
                                             $timestamp,
@@ -496,12 +506,14 @@ if ($nokartu) {
                         } elseif ($hasil_kode_device == "MASJID") {
                             // Melihat waktu
                             // apakah waktu diantara jam 11.45 - 1.15
+                            $batasMulaiDhuha = "07:00:00";
+                            $batasSelesaiDhuha = "10:00:00";
                             $batasMulai_Dzuhur = "11:45:00";
                             $batasSelesai_Dzuhur = "13:30:00";
-                            $batasMulai_ashar = "14:45:00";
+                            $batasMulai_ashar = "15:00:00";
                             $batasSelesai_ashar = "17:00:00";
 
-                            if ((strtotime($jam) > strtotime($batasMulai_Dzuhur) && strtotime($jam) < strtotime($batasSelesai_Dzuhur)) || (strtotime($jam) > strtotime($batasMulai_ashar) && strtotime($jam) < strtotime($batasSelesai_ashar))) {
+                            if ((strtotime($jam) > strtotime($batasMulaiDhuha) && strtotime($jam) < strtotime($batasSelesaiDhuha)) || (strtotime($jam) > strtotime($batasMulai_Dzuhur) && strtotime($jam) < strtotime($batasSelesai_Dzuhur)) || (strtotime($jam) > strtotime($batasMulai_ashar) && strtotime($jam) < strtotime($batasSelesai_ashar))) {
 
                                 if (strtotime($jam) > strtotime($batasMulai_Dzuhur) && strtotime($jam) < strtotime($batasSelesai_Dzuhur)) {
                                     $keterangan_masjid = "DZUHUR";
@@ -1085,9 +1097,9 @@ $array = array();
 // =================================================================
 $ip_a = isset($_GET['ipa']) ? $_GET['ipa'] : null;
 
-if (!isSafeInput2($ip_a)) {
-    die("[0x01] Program dihentikan karena karakter mencurigakan ditemukan.");
-}
+// if (!isSafeInput2($ip_a)) {
+//     die("[0x01] Program dihentikan karena karakter mencurigakan ditemukan.");
+// }
 
 if (!$ip_a) {
     $clientIP = $_SERVER['REMOTE_ADDR'];
