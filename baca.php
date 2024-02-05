@@ -123,7 +123,7 @@ if ($harilibur == false) {
         $poin_guru = "";
 
         // Cek nokartu di database dataGTK
-        $query_check_guru = "SELECT nama, nip FROM dataguru WHERE nokartu = ?";
+        $query_check_guru = "SELECT nama, nip, foto, info, kode FROM dataguru WHERE nokartu = ?";
         $stmt_check_guru = mysqli_stmt_init($konek);
         mysqli_stmt_prepare($stmt_check_guru, $query_check_guru);
         mysqli_stmt_bind_param($stmt_check_guru, "s", $nokartu);
@@ -132,14 +132,17 @@ if ($harilibur == false) {
 
         $nama_gtk = "";
         $nip_gtk = "";
+        $info_gtk = "";
+        $foto_gtk = "";
+        $kode_gtk = "";
 
         if (mysqli_stmt_num_rows($stmt_check_guru) > 0) {
-            mysqli_stmt_bind_result($stmt_check_guru, $nama_gtk, $nip_gtk);
+            mysqli_stmt_bind_result($stmt_check_guru, $nama_gtk, $nip_gtk, $foto_gtk, $info_gtk, $kode_gtk);
             mysqli_stmt_fetch($stmt_check_guru);
         }
 
         // Cek nokartu di database datasiswa
-        $query_check_siswa = "SELECT nama, nis FROM datasiswa WHERE nokartu = ?";
+        $query_check_siswa = "SELECT nama, nis, foto, kelas, kode FROM datasiswa WHERE nokartu = ?";
         $stmt_check_siswa = mysqli_stmt_init($konek);
         mysqli_stmt_prepare($stmt_check_siswa, $query_check_siswa);
         mysqli_stmt_bind_param($stmt_check_siswa, "s", $nokartu);
@@ -148,13 +151,23 @@ if ($harilibur == false) {
 
         $nama_siswa = "";
         $nis_siswa = "";
+        $foto_siswa = "";
+        $info_siswa = "";
+        $kode_siswa = "";
 
         if (mysqli_stmt_num_rows($stmt_check_siswa) > 0) {
-            mysqli_stmt_bind_result($stmt_check_siswa, $nama_siswa, $nis_siswa);
+            mysqli_stmt_bind_result($stmt_check_siswa, $nama_siswa, $nis_siswa, $foto_siswa, $info_siswa, $kode_siswa);
             mysqli_stmt_fetch($stmt_check_siswa);
         }
 
         $nomorInduk = $nip_gtk ? $nip_gtk : $nis_siswa;
+        $nama = @$nama_gtk ? $nama_gtk : $nama_siswa;
+        $noReg = @$nip_gtk ? $nip_gtk : $nis_siswa;
+        $foto = @$foto_gtk ? $foto_gtk : (@$foto_siswa ? $foto_siswa : '-');
+        $info = @$info_gtk ? $info_gtk : @$info_siswa;
+        $keterangan = @$keterangan_gtk ? $keterangan_gtk : @$keterangan_siswa;
+        $tglakhir = @$tglakhir_gtk ? $tglakhir_gtk : @$tglakhir_siswa;
+        $kode = @$kode_gtk ? $kode_gtk : @$kode_siswa;
 
         // jika ada yang ditemukan
         if ($nama_gtk != "" || $nama_siswa != "") {
@@ -163,12 +176,13 @@ if ($harilibur == false) {
             if ($nama_gtk) {
                 // echo "ditemukan: " . $nama_gtk;
                 // ambil datanya
-                $nama = $nama_gtk;
-                $foto = @$datagtk['foto'];
-                $info = @$datagtk['jabatan'];
-                $keterangan = @$datagtk['keterangan'];
-                $tglakhir = @$datagtk['tglakhirdispo'];
-                $kode = @$datagtk['kode'];
+                $nama_gtk = $nama_gtk;
+                $nip_gtk = @$datagtk['nip'];
+                $foto_gtk = @$datagtk['foto'];
+                $info_gtk = @$datagtk['jabatan'];
+                $keterangan_gtk = @$datagtk['keterangan'];
+                $tglakhir_gtk = @$datagtk['tglakhirdispo'];
+                $kode_gtk = @$datagtk['kode'];
                 // echo($nama . $foto . $info . $keterangan . $tglakhir);
 
 
@@ -194,12 +208,13 @@ if ($harilibur == false) {
             } elseif ($nama_siswa) {
                 // echo "detemukan: " . $nama_siswa;
                 // ambil datanya
-                $nama = $nama_siswa;
-                $foto = @$data_siswa['foto'];
-                $info = @$data_siswa['kelas'];
-                $keterangan = @$data_siswa['keterangan'];
-                $tglakhir = @$data_siswa['tglakhir'];
-                $kode = @$data_siswa['kode'];
+                // $nama_siswa = $nama_siswa;
+                $nis_siswa = @$data_siswa['nis'];
+                $foto_siswa = @$data_siswa['foto'];
+                $info_siswa = @$data_siswa['kelas'];
+                $keterangan_siswa = @$data_siswa['keterangan'];
+                $tglakhir_siswa = @$data_siswa['tglakhir'];
+                $kode_siswa = @$data_siswa['kode'];
                 // echo($nama . $foto . $info . $keterangan . $tglakhir);
 
                 // jika tanggal ijin/disposisi telah berlalu/berakhir
@@ -294,7 +309,22 @@ if ($harilibur == false) {
                     $query_insert_datapresensi = "INSERT INTO datapresensi (nokartu, nomorinduk, nama, info, foto, waktumasuk, ketmasuk, a_time, tanggal, keterangan, updated_at, kode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     $stmt_insert_datapresensi = mysqli_stmt_init($konek);
                     mysqli_stmt_prepare($stmt_insert_datapresensi, $query_insert_datapresensi);
-                    mysqli_stmt_bind_param($stmt_insert_datapresensi, "ssssssssssss", $nokartu, $nomorInduk, $nama, $info, $foto, $jam, $ket, $selisihWaktu, $tanggal, $keterangan, $timestamp, $kode);
+                    mysqli_stmt_bind_param(
+                        $stmt_insert_datapresensi,
+                        "ssssssssssss",
+                        $nokartu,
+                        $nomorInduk,
+                        $nama,
+                        $info,
+                        $foto,
+                        $jam,
+                        $ket,
+                        $selisihWaktu,
+                        $tanggal,
+                        $keterangan,
+                        $timestamp,
+                        $kode
+                    );
                     mysqli_stmt_execute($stmt_insert_datapresensi);
 
 
@@ -337,7 +367,12 @@ if ($harilibur == false) {
                 $query_select_datapresensi = "SELECT nokartu FROM datapresensi WHERE nokartu = ? and tanggal = ?";
                 $stmt_select_datapresensi = mysqli_stmt_init($konek);
                 mysqli_stmt_prepare($stmt_select_datapresensi, $query_select_datapresensi);
-                mysqli_stmt_bind_param($stmt_select_datapresensi, "ss", $nokartu, $tanggal);
+                mysqli_stmt_bind_param(
+                    $stmt_select_datapresensi,
+                    "ss",
+                    $nokartu,
+                    $tanggal
+                );
                 mysqli_stmt_execute($stmt_select_datapresensi);
                 $result = mysqli_stmt_get_result($stmt_select_datapresensi);
                 $data = mysqli_fetch_array($result);
@@ -364,7 +399,17 @@ if ($harilibur == false) {
                     $query_update_datapresensi = "UPDATE datapresensi SET waktupulang=?, ketpulang=?, b_time=?, keterangan=?, updated_at=? WHERE nokartu=? AND tanggal=?";
                     $stmt_update_datapresensi = mysqli_stmt_init($konek);
                     mysqli_stmt_prepare($stmt_update_datapresensi, $query_update_datapresensi);
-                    mysqli_stmt_bind_param($stmt_update_datapresensi, "sssssss", $jam, $ket, $selisihWaktu, $keterangan, $timestamp, $nokartu, $tanggal);
+                    mysqli_stmt_bind_param(
+                        $stmt_update_datapresensi,
+                        "sssssss",
+                        $jam,
+                        $ket,
+                        $selisihWaktu,
+                        $keterangan,
+                        $timestamp,
+                        $nokartu,
+                        $tanggal
+                    );
                     $update = mysqli_stmt_execute($stmt_update_datapresensi);
 
                     // if ($update) {
