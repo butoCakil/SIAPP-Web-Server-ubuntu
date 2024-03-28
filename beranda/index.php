@@ -207,7 +207,7 @@ $query = mysqli_query($konek, $sql);
                                                 <td style="width: 5px;"><?= $i; ?></td>
                                                 <td><?= hariIndo(date('l', strtotime($data['tanggal']))); ?></td>
                                                 <td><?= $data['tanggal']; ?></td>
-                                                <?php if ($data['ketmasuk'] == 'Terlambat') {
+                                                <?php if ($data['ketmasuk'] == 'TLT') {
                                                     $waktumasuk = '<span class="badge badge-warning">' . $data['waktumasuk'] . '</span>';
                                                     $a_time = '<span class="badge badge-warning">+' . $data['a_time'] . '</span>';
                                                 } else if ($data['ketmasuk'] == '') {
@@ -222,7 +222,7 @@ $query = mysqli_query($konek, $sql);
                                                     <?= $a_time; ?>
                                                 </td>
                                                 <?php
-                                                if ($data['ketpulang'] == 'Pulang') {
+                                                if ($data['ketpulang'] == 'PLG') {
                                                     $waktupulang = '<span class="badge badge-success">' . $data['waktupulang'] . '</span>';
                                                     $b_time = '<span class="badge badge-success">+' . $data['b_time'] . '</span>';
                                                 } else if ($data['ketpulang'] == '') {

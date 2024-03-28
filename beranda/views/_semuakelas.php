@@ -252,8 +252,33 @@ $hasil_cari_presensi = cari_data_presensi($nokartu_siswa, $hasil_datapresensi);
         <div id="pilihkelasrekapsemua" class="col-12" style="display: block; margin-left: auto; margin-right: auto; margin-top: -20px;">
             <div class="card elevation-3">
                 <div class="card-body">
+                    <?php
+                    $bbtn_kls_TE = "";
+                    $bbtn_kls_AT = "";
+                    $bbtn_kls_DKV = "";
+                    $bbtn_kls_smw = "";
+                    $elevation3_TE = " elevation-3";
+                    $elevation3_AT = " elevation-3";
+                    $elevation3_DKV = " elevation-3";
+                    $elevation3_smw = " elevation-3";
+
+                    $get_jur = @$_GET['jur'];
+                    if ($get_jur == "TE") {
+                        $bbtn_kls_TE = " disabled";
+                        $elevation3_TE = "";
+                    } elseif ($get_jur == "AT") {
+                        $bbtn_kls_AT = " disabled";
+                        $elevation3_AT = "";
+                    } elseif ($get_jur == "DKV") {
+                        $bbtn_kls_DKV = " disabled";
+                        $elevation3_DKV = "";
+                    } else {
+                        $bbtn_kls_smw = " disabled";
+                        $elevation3_smw = "";
+                    }
+                    ?>
                     <div>
-                        <a href="?tanggal=<?= $tanggal_pilih; ?>" class="btn btn-dark bg-gradient-dark elevation-3 no-border">
+                        <a href="?tanggal=<?= $tanggal_pilih; ?>" class="btn btn-dark bg-gradient-dark <?= $elevation3_smw; ?> no-border<?= $bbtn_kls_smw; ?>">
                             <i class="fas fa-database"></i>
                             <span>
                                 &nbsp;Semua
@@ -261,7 +286,7 @@ $hasil_cari_presensi = cari_data_presensi($nokartu_siswa, $hasil_datapresensi);
                         </a>
                     </div>
                     <div class="btn-group">
-                        <a href="?jur=AT&tanggal=<?= $tanggal_pilih; ?>&kelas=" type="button" class="btn btn-success bg-gradient-success elevation-3">AT</a>
+                        <a href="?jur=AT&tanggal=<?= $tanggal_pilih; ?>&kelas=" type="button" class="btn btn-success bg-gradient-success<?= $elevation3_AT; ?><?= $bbtn_kls_AT; ?>">AT</a>
                         <button class="elevation-3 btn btn-success bg-gradient-success dropdown-toggle dropdown-toggle-split" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <li><a class="dropdown-item" href="?jur=AT&kelas=X&tanggal=<?= $tanggal_pilih; ?>">Kelas X AT &nbsp;&nbsp;&raquo;</a>
@@ -288,7 +313,7 @@ $hasil_cari_presensi = cari_data_presensi($nokartu_siswa, $hasil_datapresensi);
                         </ul>
                     </div>
                     <div class="btn-group">
-                        <a href="?jur=DKV&tanggal=<?= $tanggal_pilih; ?>&kelas=" type="button" class="btn btn-primary bg-gradient-primary elevation-3">DKV</a>
+                        <a href="?jur=DKV&tanggal=<?= $tanggal_pilih; ?>&kelas=" type="button" class="btn btn-primary bg-gradient-primary<?= $elevation3_DKV; ?><?= $bbtn_kls_DKV; ?>">DKV</a>
                         <button class="elevation-3 btn btn-primary bg-gradient-primary dropdown-toggle dropdown-toggle-split" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <li><a class="dropdown-item" href="?jur=DKV&kelas=X&tanggal=<?= $tanggal_pilih; ?>">Kelas X DKV&nbsp;&nbsp;&nbsp;&raquo;</a>
@@ -315,7 +340,7 @@ $hasil_cari_presensi = cari_data_presensi($nokartu_siswa, $hasil_datapresensi);
                         </ul>
                     </div>
                     <div class="btn-group">
-                        <a href="?jur=TE&tanggal=<?= $tanggal_pilih; ?>&kelas=" type="button" class="btn btn-warning bg-gradient-warning elevation-3">TE</a>
+                        <a href="?jur=TE&tanggal=<?= $tanggal_pilih; ?>&kelas=" type="button" class="btn btn-warning bg-gradient-warning<?= $elevation3_TE; ?><?= $bbtn_kls_TE; ?>">TE</a>
                         <button class="elevation-3 btn btn-warning bg-gradient-warning dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown"></button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <li><a class="dropdown-item" href="?jur=TE&kelas=X&tanggal=<?= $tanggal_pilih; ?>">Kelas X TE&nbsp;&nbsp;&nbsp;&raquo;</a>
@@ -398,15 +423,16 @@ $hasil_cari_presensi = cari_data_presensi($nokartu_siswa, $hasil_datapresensi);
                             <tr style="text-align: center; position: sticky;">
                                 <th>No.</th>
                                 <th>Tanggal</th>
+                                <th>NIS</th>
                                 <th>Nama</th>
-                                <th>Foto</th>
+                                <!-- <th>Foto</th> -->
                                 <th>Kelas</th>
                                 <th>Masuk</th>
                                 <th>Pulang</th>
-                                <th>Status</th>
-                                <th>Info [Jam] [Catatan]</th>
+                                <!-- <th>Status</th> -->
+                                <!-- <th>Info [Jam] [Catatan]</th> -->
                                 <th>Keterangan</th>
-                                <th>Kontak</th>
+                                <!-- <th>Kontak</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -429,16 +455,20 @@ $hasil_cari_presensi = cari_data_presensi($nokartu_siswa, $hasil_datapresensi);
                                 $hct_b_time = @$hasil_cari_tanggal[0]['b_time'] ? $hasil_cari_tanggal[0]['b_time'] : '-';
                                 $hct_keterangan = @$hasil_cari_tanggal[0]['keterangan'] ? $hasil_cari_tanggal[0]['keterangan'] : '-';
 
-                                if ($hct_ketmasuk == 'On Time') {
-                                    $hct_ketmasuk = '<span class="badge badge-success">On Time</span>';
-                                } elseif ($hct_ketmasuk == 'Terlambat') {
+                                if ($hct_ketmasuk == 'MSK') {
+                                    $hct_ketmasuk = '<span class="badge badge-success">Masuk</span>';
+                                    $hct_a_time = '<span class="badge badge-success">' . $hct_a_time . '</span>';
+                                } elseif ($hct_ketmasuk == 'TLT') {
                                     $hct_ketmasuk = '<span class="badge badge-warning">Terlambat</span>';
+                                    $hct_a_time = '<span class="badge badge-warning">' . $hct_a_time . '</span>';
                                 }
 
-                                if ($hct_ketpulang == 'Pulang') {
+                                if ($hct_ketpulang == 'PLG') {
                                     $hct_ketpulang = '<span class="badge badge-success">Pulang</span>';
-                                } elseif ($hct_ketpulang == 'Pulang Awal') {
-                                    $hct_ketpulang = '<span class="badge badge-warning">Pulang Awal</span>';
+                                    $hct_b_time = '<span class="badge badge-success">' . $hct_b_time . '</span>';
+                                } elseif ($hct_ketpulang == "PA") {
+                                    $hct_ketpulang = '<span class="badge badge-warning">P. Awal</span>';
+                                    $hct_b_time = '<span class="badge badge-warning">' . $hct_b_time . '</span>';
                                 }
 
                                 if ($hct_keterangan != '-' && $hct_keterangan != '') {
@@ -450,82 +480,91 @@ $hasil_cari_presensi = cari_data_presensi($nokartu_siswa, $hasil_datapresensi);
                                 <tr <?= $hct_bg_keterangan; ?> style="text-align: center;">
                                     <td style="width: 5%;"><?= $no + 1; ?></td>
                                     <td><?= $nama_hari_singkat_pilih; ?>, <?= $tanggal_pilih_dmY; ?></td>
+                                    <td style="text-align: left;"><?= $hasil_datasiswa[$no]['nis']; ?></td>
                                     <td style="text-align: left;"><?= $hasil_datasiswa[$no]['nama']; ?></td>
-                                    <td><img src="../img/user/<?= $hasil_datasiswa[$no]['foto'] ? $hasil_datasiswa[$no]['foto'] : 'default.jpg'; ?>" style="height: 50px; width: 50px; image-rendering: auto; border-image: auto; border-radius: 50%;"></td>
+                                    <!-- <td><img src="../img/user/<?= $hasil_datasiswa[$no]['foto'] ? $hasil_datasiswa[$no]['foto'] : 'default.jpg'; ?>" style="height: 50px; width: 50px; image-rendering: auto; border-image: auto; border-radius: 50%;"></td> -->
                                     <td><?= $hasil_datasiswa[$no]['kelas']; ?></td>
                                     <td>
-                                        <?= $hct_waktumasuk; ?>
-                                        <?= $hct_ketmasuk; ?>
-                                        <?= $hct_a_time; ?>
+                                        <?php if ($hct_waktumasuk && $hct_waktumasuk != "00:00:00") { ?>
+                                            <?= $hct_waktumasuk; ?>
+                                            <?= $hct_ketmasuk; ?>
+                                            <?= $hct_a_time; ?>
+                                        <?php } else {
+                                            echo "<span class='badge badge-secondary'>TPM</span>";
+                                        } ?>
                                     </td>
                                     <td>
-                                        <?= $hct_waktupulang; ?>
-                                        <?= $hct_ketpulang; ?>
-                                        <?= $hct_b_time; ?>
+                                        <?php if ($hct_waktupulang && $hct_waktupulang != "00:00:00") { ?>
+                                            <?= $hct_waktupulang; ?>
+                                            <?= $hct_ketpulang; ?>
+                                            <?= $hct_b_time; ?>
+                                        <?php } else {
+                                            echo "<span class='badge badge-secondary'>BPP</span>";
+                                        } ?>
                                     </td>
 
                                     <?php
-                                    $sql_presensikelas = mysqli_query($konek, "SELECT * FROM presensikelas WHERE nis = '" . $hasil_datasiswa[$no]['nis'] . "' AND " . "tanggal = '" . $tanggal_pilih . "'");
+                                    // $sql_presensikelas = mysqli_query($konek, "SELECT * FROM presensikelas WHERE nis = '" . $hasil_datasiswa[$no]['nis'] . "' AND " . "tanggal = '" . $tanggal_pilih . "'");
 
-                                    $data_hadir_kelas = array();
-                                    $info_hadir_kelas = array();
-                                    while ($data_presensikelas = mysqli_fetch_array($sql_presensikelas)) {
-                                        $data_hadir_kelas[] = $data_presensikelas['status'];
-                                        $info_hadir_kelas[] = '<span class="badge badge-secondary">[' . $data_presensikelas['mulai_jamke'] . '-' . $data_presensikelas['sampai_jamke'] . ']</span><br>' . $data_presensikelas['catatan'];
-                                    }
+                                    // $data_hadir_kelas = array();
+                                    // $info_hadir_kelas = array();
+                                    // while ($data_presensikelas = mysqli_fetch_array($sql_presensikelas)) {
+                                    //     $data_hadir_kelas[] = $data_presensikelas['status'];
+                                    //     $info_hadir_kelas[] = '<span class="badge badge-secondary">[' . $data_presensikelas['mulai_jamke'] . '-' . $data_presensikelas['sampai_jamke'] . ']</span><br>' . $data_presensikelas['catatan'];
+                                    // }
                                     ?>
 
-                                    <td>
-                                        <?php
-                                        if ($data_hadir_kelas) {
-                                            $i = 0;
-                                            foreach ($data_hadir_kelas as $value_data) {
-                                                if ($value_data[$i] == 'H') {
-                                                    $bg_ = 'success';
-                                                } elseif ($value_data[$i] == 'I') {
-                                                    $bg_ = 'primary';
-                                                } elseif ($value_data[$i] == 'S') {
-                                                    $bg_ = 'info';
-                                                } elseif ($value_data[$i] == 'T') {
-                                                    $bg_ = 'warning';
-                                                } elseif ($value_data[$i] == 'A') {
-                                                    $bg_ = 'danger';
-                                                } else {
-                                                    $bg_ = 'dark';
-                                                }
+                                    <!-- <td> -->
+                                    <?php
+                                    // if ($data_hadir_kelas) {
+                                    //     $i = 0;
+                                    //     foreach ($data_hadir_kelas as $value_data) {
+                                    //         if ($value_data[$i] == 'H') {
+                                    //             $bg_ = 'success';
+                                    //         } elseif ($value_data[$i] == 'I') {
+                                    //             $bg_ = 'primary';
+                                    //         } elseif ($value_data[$i] == 'S') {
+                                    //             $bg_ = 'info';
+                                    //         } elseif ($value_data[$i] == 'T') {
+                                    //             $bg_ = 'warning';
+                                    //         } elseif ($value_data[$i] == 'A') {
+                                    //             $bg_ = 'danger';
+                                    //         } else {
+                                    //             $bg_ = 'dark';
+                                    //         }
 
 
-                                                echo "<pre class='badge badge-" . $bg_ . "'>";
-                                                echo ($value_data);
-                                                echo "</pre>";
-                                                $i++;
-                                            }
-                                        }
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <?php
-                                        if ($info_hadir_kelas) {
-                                            $i = 0;
-                                            foreach ($info_hadir_kelas as $value_info) {
-                                                echo "<pre>";
-                                                echo ($value_info);
-                                                echo "</pre>";
-                                                $i++;
-                                            }
-                                        }
-                                        ?>
-                                    </td>
+                                    //         echo "<pre class='badge badge-" . $bg_ . "'>";
+                                    //         echo ($value_data);
+                                    //         echo "</pre>";
+                                    //         $i++;
+                                    //     }
+                                    // }
+                                    ?>
+                                    <!-- </td> -->
+                                    <!-- <td> -->
+                                    <?php
+                                    // if ($info_hadir_kelas) {
+                                    //     $i = 0;
+                                    //     foreach ($info_hadir_kelas as $value_info) {
+                                    //         echo "<pre>";
+                                    //         echo ($value_info);
+                                    //         echo "</pre>";
+                                    //         $i++;
+                                    //     }
+                                    // }
+                                    ?>
+                                    <!-- </td> -->
 
                                     <td><?= $hct_keterangan; ?></td>
-                                    <td>
-                                        <!-- <img id="sosmed_WA" src="../img/app/message-circle_w.svg" style="background-color: lime; border-radius: 100%; padding: 5px;"> -->
-                                        <!-- <span class="iconify" data-icon="ion:logo-whatsapp" style="background-color: lime; border-radius: 100%; padding: 5px;"></span> -->
-                                        <a id="waicon_01" href="#" target="_blank">
-                                            <i class="fab fa-whatsapp"></i>
-                                            <!-- <img src="../img/app/message-circle_w.svg"> -->
-                                        </a>
-                                    </td>
+                                    <!-- <td> -->
+                                    <!-- <img id="sosmed_WA" src="../img/app/message-circle_w.svg" style="background-color: lime; border-radius: 100%; padding: 5px;"> -->
+                                    <!-- <span class="iconify" data-icon="ion:logo-whatsapp" style="background-color: lime; border-radius: 100%; padding: 5px;"></span> -->
+                                    <!-- <a id="waicon_01" href="#" target="_blank"> -->
+                                    <!-- <i class="fab fa-whatsapp"></i> -->
+                                    <!-- <img src="../img/app/message-circle_w.svg"> -->
+                                    <!-- </a> -->
+                                    <!-- </td> -->
                                 </tr>
                                 <?php $no++; ?>
                             <?php } ?>
@@ -547,8 +586,8 @@ $hasil_cari_presensi = cari_data_presensi($nokartu_siswa, $hasil_datapresensi);
             "responsive": true,
             "lengthChange": true,
             "lengthMenu": [
-                [30, 50, 100, -1],
-                [30, 50, 100, "Semua"]
+                [50, 100, 500, -1],
+                [50, 100, 500, "Semua"]
             ],
             "pagingType": "full",
             "language": {

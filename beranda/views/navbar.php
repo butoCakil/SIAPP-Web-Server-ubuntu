@@ -496,7 +496,7 @@ if (@$navlink == 'Beranda') {
                     <a href="#" class="nav-link <?= @$navlink_active_4; ?>">
                         <i class="nav-icon fas fa-copy text-warning"></i>
                         <p>
-                            Data Kelas
+                            Data Siswa
                             <i class="right fas fa-angle-left"></i>
                             <?php if (@$akses_login == 'Wali Kelas') { ?>
                                 <span class="badge badge-success bg-success text-light"><?= $akses_login; ?></span>
@@ -559,7 +559,7 @@ if (@$navlink == 'Beranda') {
                         <li class="nav-item">
                             <a href="<?= @$dir; ?>semuakelas.php" class="nav-link <?= $navlink_sub2_active_0; ?>">
                                 &nbsp;<i class="far fa-folder-open nav-icon text-warning"></i>
-                                <p>Kehadiran Kelas</p>
+                                <p>Kehadiran Siswa</p>
                             </a>
                         </li>
                         <li class="nav-item">

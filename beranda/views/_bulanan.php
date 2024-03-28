@@ -172,9 +172,9 @@
                                                 $keterangan = 'DL';
                                             }
 
-                                            if ($ketmasuk == 'On Time') {
+                                            if ($ketmasuk == 'MSK') {
                                                 $keterangan_hari_ini_1 = '<div class="badge badge-success">' . $waktumasuk . '</div>';
-                                            } else if ($ketmasuk == 'Terlambat') {
+                                            } else if ($ketmasuk == 'TLT') {
                                                 $keterangan_hari_ini_1 = '<div class="badge badge-warning">' . $waktumasuk . '</div>';
                                             } else if ($ketmasuk == '') {
                                                 $keterangan_hari_ini_1 = '';
@@ -182,9 +182,9 @@
                                                 $keterangan_hari_ini_1 = '<div class="badge badge-danger">' . $waktupulang . '</div>';
                                             }
 
-                                            if ($ketpulang == 'Pulang') {
+                                            if ($ketpulang == 'PLG') {
                                                 $keterangan_hari_ini_2 = '<div class="badge badge-success">' . $waktupulang . '</div>';
-                                            } else if ($ketpulang == 'Pulang Awal') {
+                                            } else if ($ketpulang == "PA") {
                                                 $keterangan_hari_ini_2 = '<div class="badge badge-warning">' . $waktupulang . '</div>';
                                             } else if ($ketpulang == '') {
                                                 $keterangan_hari_ini_2 = '';

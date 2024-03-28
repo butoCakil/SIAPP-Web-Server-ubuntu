@@ -13,7 +13,7 @@ if ($_POST) {
     $xten = explode('.', $fotoselfie);
     $ekstensi = strtolower(end($xten));
 
-    
+
     if ($fotoselfie) {
         $datab = $_POST['datab'];
         $nokartu = $_POST['nokartu'];
@@ -89,7 +89,7 @@ if ($_POST) {
             echo "nokartynya masihkah? " . $nokartu;
 
             if ($jam <= $waktumasuk) {
-                $ket = "On Time";
+                $ket = "MSK";
 
                 $w_awal = strtotime($jam);
                 $w_akhir = strtotime($waktumasuk);
@@ -103,7 +103,7 @@ if ($_POST) {
                 // penggabungan
                 $selisihWaktu = $selisihjam . ":" . $selisihmenit . ":" . $selisihdetik;
             } else {
-                $ket = "Terlambat";
+                $ket = "TLT";
                 // menghitung selisih jam
                 $w_awal = strtotime($waktumasuk);
                 $w_akhir = strtotime($jam);

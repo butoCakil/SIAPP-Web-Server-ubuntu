@@ -28,7 +28,7 @@ if ($mqtt->connect(true, NULL, $username, $password)) {
     // $text_log .= $infoValue;
     // $text_log .= "\n";
     $text_log .= "\n";
-    $mqtt->publish($topic, $message, 0);
+    $mqtt->publish($topic, $message, 1);
 } else {
     $text_log .= "Koneksi \"$topic\" gagal.\n";
     $text_log .= "\n";

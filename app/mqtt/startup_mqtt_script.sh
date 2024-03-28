@@ -17,3 +17,7 @@ then
 else
     echo "sub_mqtt.php is already running."
 fi
+
+
+# cek --> 'tail -f /var/log/sub_mqtt.out.log'
+# menggunakan `supervisor`

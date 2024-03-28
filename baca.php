@@ -248,11 +248,11 @@ if ($harilibur == false) {
                     // echo ("masuk set insert datapresen   si"); die;
 
                     if ($jam <= $waktumasuk) {
-                        $ket = "On Time";
+                        $ket = "MSK";
 
                         $selisihWaktu = selisih($jam, $waktumasuk);
                     } else {
-                        $ket = "Terlambat";
+                        $ket = "TLT";
                         // menghitung selisih jam
                         $selisihWaktu = selisih($waktumasuk, $jam);
 
@@ -347,13 +347,13 @@ if ($harilibur == false) {
             } elseif ($mode == 2) {
                 if (!$keterangan) {
                     if ($jam <= $waktupulang) {
-                        $ket = "Pulang Awal";
+                        $ket = "PA";
                         $pesan = "<b class='fs-2'>" . $nama . "</b>,<br>Anda pulang lebih awal.<br>Tunggu sampai jam " . $waktupulang . ".";
 
                         // menghitung selisih jam
                         $selisihWaktu = selisih($jam, $waktupulang);
                     } else {
-                        $ket = "Pulang";
+                        $ket = "PLG";
                         $pesan = "Presensi Pulang berhasil.<br>Hati-hati di jalan " . "<b class='fs-2'>" . $nama . "</b>";
 
                         // menghitung selisih jam

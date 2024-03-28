@@ -54,14 +54,15 @@ if (@$_GET['page'] == 'chart') {
                                     &nbsp;
                                     Grafik
                                 </a>
-                                <a href="?page=table" class="btn btn-success bg-gradient-success elevation-2 <?= $tmb2_aktif; ?>">
+                                <!-- <a href="?page=table" class="btn btn-success bg-gradient-success elevation-2 <?= $tmb2_aktif; ?>"> -->
+                                <a href="../app/mqtt/log/" class="btn btn-success bg-gradient-success elevation-2 <?= $tmb2_aktif; ?>">
                                     <?php if ($tmb2_aktif) { ?>
                                         <i class="fas fa-spinner fa-spin"></i>
                                     <?php } else { ?>
                                         <i class="fas fa-table"></i>
                                     <?php } ?>
                                     &nbsp;
-                                    Tabel
+                                    Log
                                 </a>
                             </div>
                         </div>
@@ -246,9 +247,9 @@ mysqli_close($konek);
 
                                             // echo "$__hdir<br>";
 
-                                            if ($__hdir == 'On Time') {
+                                            if ($__hdir == 'MSK') {
                                                 $_H++;
-                                            } elseif ($__hdir == 'Terlambat') {
+                                            } elseif ($__hdir == 'TLT') {
                                                 $_T++;
                                             } elseif ($__hdir == 'Ijin') {
                                                 $_I++;
@@ -315,7 +316,12 @@ mysqli_close($konek);
                     <div class="card-footer">
                         <div class="d-flex justify-content-between">
                             <div style="font-size: 11px; font-style: italic;">
-                                Data masuk:&nbsp;<?= $_jml_tercatat_hadir_gate; ?>&nbsp;/&nbsp;<?= $_jml_semua_siswa; ?>&nbsp;(<?= $_persen_tercatat_gate; ?>&nbsp;%)
+                                <?php
+                                $_persen_tercatat_gate_q = ($_jml_tercatat_hadir_gate / $_jml_semua_siswa) * 100;
+                                ?>
+                                Data masuk:&nbsp;<?= $_jml_tercatat_hadir_gate; ?>&nbsp;/&nbsp;<?= $_jml_semua_siswa; ?>&nbsp;(<?= number_format($_persen_tercatat_gate_q, 2); ?>&nbsp;%)
+
+                                <!-- WWWWWWW -->
                             </div>
                             <div>
                                 <a href="#" class="btn btn-outline-secondary btn-sm float-md-right">
@@ -369,9 +375,9 @@ mysqli_close($konek);
                         $__hdir = $_data_presensi_kelas[$jj]['ketmasuk'];
                         $_data_hadir[] = $__hdir;
 
-                        if ($__hdir == 'On Time') {
+                        if ($__hdir == 'MSK') {
                             $_H++;
-                        } elseif ($__hdir == 'Terlambat') {
+                        } elseif ($__hdir == 'TLT') {
                             $_T++;
                         } elseif ($__hdir == 'Ijin') {
                             $_I++;
@@ -411,6 +417,8 @@ mysqli_close($konek);
                         $_persen_IS = 0;
                     }
 
+                    $persenHadirHariini = $_persen_H + $_persen_T;
+
                     ?>
 
                     <div id="tabel_ijin" class="card-body">
@@ -420,35 +428,35 @@ mysqli_close($konek);
                                 <div class="col-6 text-center">
                                     <input type="text" class="knob" value="<?= $_persen_H; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#00a65a" data-readonly="true">
 
-                                    <div class="knob-label mt-n2 mb-2">Hadir</div>
+                                    <div class="knob-label mt-n2 mb-2">% Hadir</div>
                                 </div>
 
                                 <div class="col-6 text-center">
                                     <input type="text" class="knob" value="<?= $_persen_T; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#ffaf00" data-readonly="true">
 
-                                    <div class="knob-label mt-n2 mb-2">Terlambat</div>
+                                    <div class="knob-label mt-n2 mb-2">% Terlambat</div>
                                 </div>
 
-                                <div class="col-6 text-center">
+                                <!-- <div class="col-6 text-center">
                                     <input type="text" class="knob" value="<?= $_persen_I; ?>" data-skin="tron" data-thickness="0.2" data-angleOffset="0" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#00c0ef" data-readonly="true">
 
-                                    <div class="knob-label mt-n2 mb-2">Ijin</div>
+                                    <div class="knob-label mt-n2 mb-2">% Ijin</div>
                                 </div>
 
                                 <div class="col-6 text-center">
                                     <input type="text" class="knob" value="<?= $_persen_S; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#3c8dbc" data-readonly="true">
 
-                                    <div class="knob-label mt-n2 mb-2">Sakit</div>
+                                    <div class="knob-label mt-n2 mb-2">% Sakit</div>
                                 </div>
 
                                 <div class="col-6 text-center">
                                     <input type="text" class="knob" value="<?= $_persen_A; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#f56954" data-readonly="true">
 
-                                    <div class="knob-label mt-n2 mb-2">Alpa</div>
-                                </div>
+                                    <div class="knob-label mt-n2 mb-2">% Alpa</div>
+                                </div> -->
 
                                 <div class="col-6 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_tercatat; ?>" data-skin="tron" data-thickness="0.2" data-angleArc="250" data-angleOffset="-125" data-width="73" data-height="73" data-fgColor="#00011F" data-readonly="true">
+                                    <input type="text" class="knob" value="<?= $persenHadirHariini; ?>" data-skin="tron" data-thickness="0.2" data-angleArc="250" data-angleOffset="-125" data-width="73" data-height="73" data-fgColor="#00011F" data-readonly="true">
 
                                     <div class="knob-label mt-n2 mb-2">% Kehadiran Tercatat</div>
                                 </div>
@@ -477,9 +485,9 @@ mysqli_close($konek);
                             $__hdir = $_data_presensi_kelas[$jj]['ketmasuk'];
                             $_data_hadir[] = $__hdir;
 
-                            if ($__hdir == 'On Time') {
+                            if ($__hdir == 'MSK') {
                                 $_H++;
-                            } elseif ($__hdir == 'Terlambat') {
+                            } elseif ($__hdir == 'TLT') {
                                 $_T++;
                             } elseif ($__hdir == 'Ijin') {
                                 $_I++;
@@ -520,46 +528,52 @@ mysqli_close($konek);
                         }
 
                         ?>
-                        <h6>Seluruh Kehadiran</h6>
+                        <h6>Rata-rata Seluruh Kehadiran</h6>
                         <div class="tabel_curva_1">
                             <div class="d-flex flex-wrap">
                                 <div class="col-6 text-center">
                                     <input type="text" class="knob" value="<?= $_persen_H; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#00a65a" data-readonly="true">
 
-                                    <div class="knob-label mt-n2 mb-2">Hadir</div>
+                                    <div class="knob-label mt-n2 mb-2">% Hadir</div>
                                 </div>
 
                                 <div class="col-6 text-center">
                                     <input type="text" class="knob" value="<?= $_persen_T; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#ffaf00" data-readonly="true">
 
-                                    <div class="knob-label mt-n2 mb-2">Terlambat</div>
+                                    <div class="knob-label mt-n2 mb-2">% Terlambat</div>
                                 </div>
 
-                                <div class="col-6 text-center">
+                                <!-- <div class="col-6 text-center">
                                     <input type="text" class="knob" value="<?= $_persen_I; ?>" data-skin="tron" data-thickness="0.2" data-angleOffset="0" data-width="73" data-height="73" data-angleArc="300" data-readonly="true" data-fgColor="#00c0ef">
 
-                                    <div class="knob-label mt-n2 mb-2">Ijin</div>
-                                </div>
+                                    <div class="knob-label mt-n2 mb-2">% Ijin</div>
+                                </div> -->
 
-                                <div class="col-6 text-center">
+                                <!-- <div class="col-6 text-center">
                                     <input type="text" class="knob" value="<?= $_persen_S; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#3c8dbc" data-angleArc="300" data-readonly="true">
 
-                                    <div class="knob-label mt-n2 mb-2">Sakit</div>
-                                </div>
-
+                                    <div class="knob-label mt-n2 mb-2">% Sakit</div>
+                                </div> -->
+                                <!-- 
                                 <div class="col-6 text-center">
                                     <input type="text" class="knob" value="<?= $_persen_A; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#f56954" data-angleArc="300" data-readonly="true">
 
-                                    <div class="knob-label mt-n2 mb-2">Alpa</div>
-                                </div>
-
-                                <div class="col-6 text-center">
-                                    <input type="text" class="knob" value="<?= $_semua_data_presensi_kelas; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#011151" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">Data Tercatat (K)</div>
-                                </div>
+                                    <div class="knob-label mt-n2 mb-2">% Alpa</div>
+                                </div> -->
 
                             </div>
+
+                            <hr>
+                            <div class="tabel_curva_1">
+                                <div class="d-flex flex-wrap">
+                                    <div class="col-6 text-center">
+                                        <input type="text" class="knob" value="<?= $_semua_data_presensi_kelas; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#011151" data-readonly="true">
+
+                                        <div class="knob-label mt-n2 mb-2">Data Tercatat (K)</div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <!-- /.card-body -->
@@ -579,11 +593,11 @@ mysqli_close($konek);
     </div>
 </section>
 
+<!--
 <section class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-7">
-                <!-- AREA CHART -->
                 <div class="card card-navy">
                     <div class="card-header bg-gradient-navy">
                         <h3 class="card-title">
@@ -712,11 +726,14 @@ mysqli_close($konek);
                             } ?>
                         </div>
                     </div>
-                    <!-- /.card-body -->
+                    
                     <div class="card-footer">
                         <div class="d-flex justify-content-between">
                             <div style="font-size: 11px; font-style: italic;">
-                                Data masuk:&nbsp;<?= $_jml_tercatat_hadir; ?>&nbsp;/&nbsp;<?= $_jml_semua_siswa; ?>&nbsp;(<?= $_persen_tercatat; ?>&nbsp;%)
+                                <?php
+                                $_persen_maasuk_hariini = ($_jml_tercatat_hadir / $_jml_semua_siswa) * 100;
+                                ?>
+                                Data masuk:&nbsp;<?= $_jml_tercatat_hadir; ?>&nbsp;/&nbsp;<?= $_jml_semua_siswa; ?>&nbsp;(<?= $_persen_maasuk_hariini; ?>&nbsp;%)
                             </div>
                             <div>
                                 <a href="#" class="btn btn-outline-secondary btn-sm float-md-right">
@@ -727,14 +744,14 @@ mysqli_close($konek);
                             </div>
                         </div>
                     </div>
-                    <!-- /. card-footer -->
+                    
                 </div>
-                <!-- /.card -->
+                
             </div>
-            <!-- /.col (LEFT) -->
+            
 
             <div class="col-md-5">
-                <!-- AREA CHART -->
+                
                 <div class="card card-navy">
                     <div class="card-header bg-gradient-navy">
                         <h3 class="card-title">
@@ -954,7 +971,7 @@ mysqli_close($konek);
                             </div>
                         </div>
                     </div>
-                    <!-- /.card-body -->
+                    
 
                     <div class="card-footer">
                         <a href="#" class="btn btn-outline-secondary btn-sm float-md-right">
@@ -963,16 +980,12 @@ mysqli_close($konek);
                             Selengkapnya
                         </a>
                     </div>
-                    <!-- /. card-footer -->
                 </div>
-                <!-- /.card -->
             </div>
-            <!-- /.col (RIGHT) -->
         </div>
-        <!-- /.row -->
     </div>
-    <!-- /.container-fluid -->
 </section>
+ -->
 
 <!-- Main content -->
 <section class="content">

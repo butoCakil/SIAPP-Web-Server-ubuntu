@@ -578,9 +578,9 @@ function cek_data_presensi($tgl___, $hasil___)
                             $a_time = cari_keterangan('a_time', $tgl_Ymd, $hasil_data_status);
                             $b_time = cari_keterangan('b_time', $tgl_Ymd, $hasil_data_status);
 
-                            if ($keterangan_masuk == 'On Time') {
+                            if ($keterangan_masuk == 'MSK') {
                                 $bg_status1 = 'success';
-                            } else if ($keterangan_masuk == 'Terlambat') {
+                            } else if ($keterangan_masuk == 'TLT') {
                                 $bg_status1 = 'warning';
                             } else {
                                 if ($keterangan) {
@@ -590,9 +590,9 @@ function cek_data_presensi($tgl___, $hasil___)
                                 }
                             }
 
-                            if ($keterangan_pulang == 'Pulang') {
+                            if ($keterangan_pulang == 'PLG') {
                                 $bg_status2 = 'success';
-                            } elseif ($keterangan_pulang == 'Pulang Awal') {
+                            } elseif ($keterangan_pulang == "PA") {
                                 $bg_status2 = 'warning';
                             } else {
                                 if ($keterangan) {

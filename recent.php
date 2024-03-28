@@ -50,9 +50,9 @@ if (@$_SESSION['tampilanriwayat']) {
     } elseif ($tampilket == "pulang") {
         $pilih = $pilih . " AND ketpulang IS NOT NULL ";
     } elseif ($tampilket == "terlambat") {
-        $pilih = $pilih . " AND ketmasuk = 'Terlambat '";
+        $pilih = $pilih . " AND ketmasuk = 'TLT '";
     } elseif ($tampilket == "pulangawal") {
-        $pilih = $pilih . " AND ketpulang = 'Pulang Awal '";
+        $pilih = $pilih . " AND ketpulang = 'PA '";
     } elseif ($tampilket == "ijin") {
         $pilih = $pilih . " AND keterangan = 'Ijin '";
     } elseif ($tampilket == "WFH") {

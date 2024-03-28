@@ -478,15 +478,15 @@ mysqli_close($konek);
                                 $hct_b_time = @$hasil_cari_tanggal[0]['b_time'] ? $hasil_cari_tanggal[0]['b_time'] : '-';
                                 $hct_keterangan = @$hasil_cari_tanggal[0]['keterangan'] ? $hasil_cari_tanggal[0]['keterangan'] : '-';
 
-                                if ($hct_ketmasuk == 'On Time') {
+                                if ($hct_ketmasuk == 'MSK') {
                                     $hct_ketmasuk = '<span class="badge badge-success">On Time</span>';
-                                } elseif ($hct_ketmasuk == 'Terlambat') {
+                                } elseif ($hct_ketmasuk == 'TLT') {
                                     $hct_ketmasuk = '<span class="badge badge-warning">Terlambat</span>';
                                 }
 
-                                if ($hct_ketpulang == 'Pulang') {
+                                if ($hct_ketpulang == 'PLG') {
                                     $hct_ketpulang = '<span class="badge badge-success">Pulang</span>';
-                                } elseif ($hct_ketpulang == 'Pulang Awal') {
+                                } elseif ($hct_ketpulang == "PA") {
                                     $hct_ketpulang = '<span class="badge badge-warning">Pulang Awal</span>';
                                 }
 

@@ -989,7 +989,7 @@ Berhasil merespon "dariMCU_2309G003" : {"respon":[{"id":"8008873","nodevice":"23
 Berhasil kirim balasan ke "responServer_2309G003"
 
 [2024-02-02 08:02:32]
-Menerima pesan dari: dariMCU_2309G003 - Pesan: {"nÀ 0€ dariMCU_2309G003{"nokartu":"D3547D05","idchip":"8008873","nodevice":"2309G003","key":"12345678909876
+Menerima pesan dari: dariMCU_2309G003 - Pesan: {"nï¿½ 0ï¿½ dariMCU_2309G003{"nokartu":"D3547D05","idchip":"8008873","nodevice":"2309G003","key":"12345678909876
 [2024-02-02 08:02:32]
 Berhasil merespon "dariMCU_2309G003" : [0x20] Program dihentikan karena karakter mencurigakan ditemukan.
 Berhasil kirim balasan ke "responServer_"

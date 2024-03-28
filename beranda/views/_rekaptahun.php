@@ -49,8 +49,8 @@ array (
     'foto' => 'sarah.pratiwi__cleopatra564.jpg',
     5 => '11:25:00',
     'waktumasuk' => '11:25:00',
-    6 => 'Terlambat',
-    'ketmasuk' => 'Terlambat',
+    6 => 'TLT',
+    'ketmasuk' => 'TLT',
     7 => '04:25:00',
     'a_time' => '04:25:00',
     8 => NULL,
@@ -115,8 +115,8 @@ array (
     'foto' => 'sarah.pratiwi__cleopatra564.jpg',
     5 => '07:34:34',
     'waktumasuk' => '07:34:34',
-    6 => 'Terlambat',
-    'ketmasuk' => 'Terlambat',
+    6 => 'TLT',
+    'ketmasuk' => 'TLT',
     7 => '00:34:34',
     'a_time' => '00:34:34',
     8 => NULL,
@@ -280,10 +280,10 @@ array (
                                                     $_a_time = @$hasilnya['a_time'] ? $hasilnya['a_time'] : '-';
                                                     $_b_time = @$hasilnya['b_time'] ? $hasilnya['b_time'] : '-';
 
-                                                    if ($keterangan_masuk == 'On Time') {
+                                                    if ($keterangan_masuk == 'MSK') {
                                                         $keterangan_masuk = $_a_time;
                                                         $bg_alert_masuk = 'success';
-                                                    } elseif ($keterangan_masuk == 'Terlambat') {
+                                                    } elseif ($keterangan_masuk == 'TLT') {
                                                         $keterangan_masuk = $_a_time;
                                                         $bg_alert_masuk = 'warning';
                                                     } elseif ($keterangan_masuk != '-') {
@@ -292,10 +292,10 @@ array (
                                                         $bg_alert_masuk = 'style="display: none;';
                                                     }
 
-                                                    if ($keterangan_pulang == 'Pulang') {
+                                                    if ($keterangan_pulang == 'PLG') {
                                                         $keterangan_pulang = $_b_time;
                                                         $bg_alert_pulang = 'success';
-                                                    } elseif ($keterangan_pulang == 'Pulang Awal') {
+                                                    } elseif ($keterangan_pulang == "PA") {
                                                         $keterangan_pulang = $_b_time;
                                                         $bg_alert_pulang = 'warning';
                                                     } elseif ($keterangan_pulang == '' || $keterangan_pulang == '-') {

@@ -115,7 +115,7 @@ if (!empty($token)) {
                         $allowed = true;
                         break;
                     case 'datapresensi':
-                        $query = "SELECT nama, info, waktumasuk, ketmasuk, a_time, waktupulang, ketpulang, b_time, updated_at FROM $db_tbl";
+                        $query = "SELECT nama, nomorinduk, info, waktumasuk, ketmasuk, a_time, waktupulang, ketpulang, b_time, updated_at FROM $db_tbl";
                         $query = fullakses($akses, $redemcode, $db_tbl, $query);
                         $allowed = true;
                         break;

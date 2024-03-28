@@ -148,17 +148,17 @@ $title = $title . ' Bulan ' . $nama_bulan_indo_pilih . ' ' . $tahun_pilih;
                                         }
 
 
-                                        if ($status_masuk == 'On Time') {
+                                        if ($status_masuk == 'MSK') {
                                             $status_masuk = '<span class="badge badge-success">' . $status_masuk . '</span> <span class="badge badge-success">' . $selisih_masuk . '</span>';
-                                        } elseif ($status_masuk == 'Terlambat') {
+                                        } elseif ($status_masuk == 'TLT') {
                                             $status_masuk = '<span class="badge badge-warning">' . $status_masuk . '</span> <span class="badge badge-warning">' . $selisih_masuk . '</span>';
                                         } else {
                                             $status_masuk = '<span class="badge badge-danger">' . $status_masuk . '</span> <span class="badge badge-danger">' . $selisih_masuk . '</span>';
                                         }
 
-                                        if ($status_pulang == 'Pulang') {
+                                        if ($status_pulang == 'PLG') {
                                             $status_pulang = '<span class="badge badge-success">' . $status_pulang . '</span> <span class="badge badge-success">' . $selisih_pulang . '</span>';
-                                        } elseif ($status_pulang == 'Pulang Awal') {
+                                        } elseif ($status_pulang == "PA") {
                                             $status_pulang = '<span class="badge badge-warning">' . $status_pulang . '</span> <span class="badge badge-warning">' . $selisih_pulang . '</span>';
                                         } else {
                                             $status_pulang = '<span class="badge badge-danger">' . $status_pulang . '</span> <span class="badge badge-danger">' . $selisih_pulang . '</span>';

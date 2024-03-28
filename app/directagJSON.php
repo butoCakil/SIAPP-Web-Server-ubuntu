@@ -306,11 +306,11 @@ if ($nokartu) {
 
                                     if (!$hasilCek) {
                                         if ($jam <= $waktumasuk) {
-                                            $ket = "On Time";
+                                            $ket = "MSK";
 
                                             $selisihWaktu = selisih($jam, $waktumasuk);
                                         } else {
-                                            $ket = "Terlambat";
+                                            $ket = "TLT";
                                             // menghitung selisih jam
                                             $selisihWaktu = selisih($waktumasuk, $jam);
 
@@ -404,12 +404,12 @@ if ($nokartu) {
                                 } elseif ($mode == 2) {
                                     if (!$keterangan) {
                                         if ($jam <= $waktupulang) {
-                                            $ket = "Pulang Awal";
+                                            $ket = "PA";
                                             $pesan = "PLAW";
                                             // menghitung selisih jam
                                             $selisihWaktu = selisih($jam, $waktupulang);
                                         } else {
-                                            $ket = "Pulang";
+                                            $ket = "PLG";
                                             $pesan = "PPBH";
 
                                             // menghitung selisih jam
@@ -418,6 +418,7 @@ if ($nokartu) {
                                     } else {
                                         $pesan = "PPPP";
                                     }
+
                                     // baca data nokartu di database datapresensi
                                     $query_select_datapresensi = "SELECT nokartu FROM datapresensi WHERE nokartu = ? AND tanggal = ?";
                                     $stmt_select_datapresensi = mysqli_stmt_init($konek);
@@ -441,17 +442,50 @@ if ($nokartu) {
 
                                     if (!$data) {
                                         // Jika tidak ada data 'nokartu' di 'datapresensi', buat data baru
-                                        $query_insert_datapresensi = "INSERT INTO datapresensi (nokartu, nama, nomorinduk, info, foto, waktupulang, ketpulang, b_time, tanggal, keterangan, updated_at, kode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                        // $query_insert_datapresensi = "INSERT INTO datapresensi (nokartu, nama, nomorinduk, info, foto, waktupulang, ketpulang, b_time, tanggal, keterangan, updated_at, kode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                        // $stmt_insert_datapresensi = mysqli_stmt_init($konek);
+                                        // mysqli_stmt_prepare($stmt_insert_datapresensi, $query_insert_datapresensi);
+                                        // mysqli_stmt_bind_param(
+                                        //     $stmt_insert_datapresensi,
+                                        //     "ssssssssssss",
+                                        //     $nokartu_clean,
+                                        //     $nama,
+                                        //     $noReg,
+                                        //     $info,
+                                        //     $foto,
+                                        //     $jam,
+                                        //     $ket,
+                                        //     $selisihWaktu,
+                                        //     $tanggal,
+                                        //     $keterangan,
+                                        //     $timestamp,
+                                        //     $kode
+                                        // );
+                                        // $insert = mysqli_stmt_execute($stmt_insert_datapresensi);
+
+                                        // // Tutup prepared statement
+                                        // mysqli_stmt_close($stmt_insert_datapresensi);
+
+
+                                        $data_waktumasuk = "00:00:00";
+                                        $data_ketmasuk = "-";
+                                        $data_atime = "00:00:00";
+
+                                        // buat data di database datapresensi
+                                        $query_insert_datapresensi = "INSERT INTO datapresensi (nokartu, nama, nomorinduk, info, foto, waktumasuk, ketmasuk, a_time, waktupulang, ketpulang, b_time, tanggal, keterangan, updated_at, kode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                                         $stmt_insert_datapresensi = mysqli_stmt_init($konek);
                                         mysqli_stmt_prepare($stmt_insert_datapresensi, $query_insert_datapresensi);
                                         mysqli_stmt_bind_param(
                                             $stmt_insert_datapresensi,
-                                            "ssssssssssss",
+                                            "sssssssssssssss",
                                             $nokartu_clean,
                                             $nama,
                                             $noReg,
                                             $info,
                                             $foto,
+                                            $data_waktumasuk,
+                                            $data_ketmasuk,
+                                            $data_atime,
                                             $jam,
                                             $ket,
                                             $selisihWaktu,
@@ -460,7 +494,7 @@ if ($nokartu) {
                                             $timestamp,
                                             $kode
                                         );
-                                        $insert = mysqli_stmt_execute($stmt_insert_datapresensi);
+                                        mysqli_stmt_execute($stmt_insert_datapresensi);
 
                                         // Tutup prepared statement
                                         mysqli_stmt_close($stmt_insert_datapresensi);
