@@ -5,6 +5,7 @@ $navlink_active_3 = '';
 $navlink_active_4 = '';
 $navlink_active_5 = '';
 $navlink_active_5x = '';
+$navlink_active_5y = '';
 $navlink_active_6 = '';
 $navlink_active_7 = '';
 $navlink_active_8 = '';
@@ -99,7 +100,7 @@ if (@$navlink == 'Beranda') {
     $menu_open_4 = 'menu-open';
 } elseif (@$navlink == 'Form Ijin') {
     $navlink_active_5 = 'active';
-    $menu_open_5 = 'menu-open';
+    // $menu_open_5 = 'menu-open';
 } elseif (@$navlink == 'Profil') {
     if ($navlink_sub == 'profil') {
         $navlink_sub3_active_1 = 'active';
@@ -168,6 +169,9 @@ if (@$navlink == 'Beranda') {
 } elseif (@$navlink == 'setID') {
     $navlink_active_5x = 'active';
     $menu_open_5x = 'menu-open';
+} elseif (@$navlink == 'setKBM') {
+    $navlink_active_5y = 'active';
+    // $menu_open_5x = 'menu-open';
 }
 
 ?>
@@ -525,21 +529,21 @@ if (@$navlink == 'Beranda') {
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?= @$dir; ?>bulanan.php?datab=siswa" class="nav-link <?= $navlink_sub2_active_2; ?>">
+                                        <a href="<?= @$dir; ?>rekapbulan.php?datab=siswa" class="nav-link <?= $navlink_sub2_active_2; ?>">
                                             &nbsp;
                                             &nbsp;
                                             <i class="fas fa-calendar nav-icon text-info"></i>
                                             <p>Bulanan</p>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
+                                    <!-- <li class="nav-item">
                                         <a href="<?= @$dir; ?>tahunan.php?datab=siswa" class="nav-link <?= $navlink_sub2_active_6; ?>">
                                             &nbsp;
                                             &nbsp;
                                             <i class="far fa-calendar nav-icon text-success"></i>
                                             <p>Tahunan</p>
                                         </a>
-                                    </li>
+                                    </li> -->
 
                                     <li class="nav-item">
                                         <a href="<?= @$dir; ?>kartukontak.php?datab=siswa" class="nav-link <?= $navlink_sub2_active_6; ?>">
@@ -560,6 +564,12 @@ if (@$navlink == 'Beranda') {
                             <a href="<?= @$dir; ?>semuakelas.php" class="nav-link <?= $navlink_sub2_active_0; ?>">
                                 &nbsp;<i class="far fa-folder-open nav-icon text-warning"></i>
                                 <p>Kehadiran Siswa</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= @$dir; ?>rekapbulan.php" class="nav-link <?= $navlink_sub2_active_0; ?>">
+                                &nbsp;<i class="far fa-folder-open nav-icon text-success"></i>
+                                <p>Rekap Kelas Perbulan</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -620,7 +630,7 @@ if (@$navlink == 'Beranda') {
                     </li>
                 <?php } ?>
 
-                <?php if (@$_SESSION['level_login'] == 'superadmin') { ?>
+                <?php if (@$_SESSION['level_login'] == 'superadmin' && @$_SESSION['level_login'] != 'admin') { ?>
                     <li class="nav-item <?= $menu_open_5; ?>">
                         <a href="<?= @$dir; ?>setting.php" class="nav-link <?= @$navlink_active_5; ?>">
                             <i class="nav-icon fas fa-cog fa-spin"></i>
@@ -629,7 +639,9 @@ if (@$navlink == 'Beranda') {
                                 Setting
                                 &nbsp;
                                 &nbsp;
-                                <span class="badge badge-warning bg-warning text-dark"><?= @$_SESSION['level_login']; ?></span>
+                                <span class="badge badge-warning bg-warning text-dark">
+                                    <i class="fas fa-lock-open"></i>
+                                </span>
                             </p>
                         </a>
                     </li>
@@ -638,23 +650,27 @@ if (@$navlink == 'Beranda') {
                             <i class="nav-icon fas fa-edit text-light"></i>
                             <p>
                                 Setting ID
+                                &nbsp;
+                                &nbsp;
+                                <span class="badge badge-warning bg-warning text-dark">
+                                    <i class="fas fa-lock-open"></i>
+                                </span>
                             </p>
                         </a>
                     </li>
-                <?php } else if (@$_SESSION['level_login'] == 'admin') { ?>
+                <?php }
+
+                if (@$_SESSION['level_login'] == 'admin' || @$_SESSION['level_login'] == 'superadmin') { ?>
                     <li class="nav-item <?= $menu_open_5; ?>">
-                        <a href="<?= @$dir; ?>setting_kbm.php" class="nav-link <?= @$navlink_active_5; ?>">
+                        <a href="<?= @$dir; ?>setting_kbm.php" class="nav-link <?= @$navlink_active_5y; ?>">
                             <i class="nav-icon fas fa-edit text-purple"></i>
                             <p>
-                                Setting
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item <?= $menu_open_5x; ?>">
-                        <a href="<?= @$dir; ?>setting_id.php" class="nav-link <?= @$navlink_active_5x; ?>">
-                            <i class="nav-icon fas fa-edit text-light"></i>
-                            <p>
-                                Setting ID
+                                Setting KBM
+                                &nbsp;
+                                &nbsp;
+                                <span class="badge badge-warning bg-warning text-dark">
+                                    <i class="fas fa-lock-open"></i>
+                                </span>
                             </p>
                         </a>
                     </li>

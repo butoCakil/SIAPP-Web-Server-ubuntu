@@ -16,7 +16,7 @@ if ($level_login == 'admin' || $level_login == 'superadmin') {
         $update = mysqli_query($konek, $sql);
 
         if ($update) {
-            echo '<script>alert("Berhasil mengubah setting 1");</script>';
+            // echo '<script>alert("Berhasil mengubah setting 1");</script>';
             $pesan = "Berhasil update pengaturan waktu masuk dan waktu pulang";
         } else {
             echo '<script>alert("Gagal mengubah setting 1 ' . mysqli_error($konek) . '");</script>';
@@ -35,7 +35,7 @@ if ($level_login == 'admin' || $level_login == 'superadmin') {
         $update = mysqli_query($konek, $sql);
 
         if ($update) {
-            echo '<script>alert("Berhasil mengubah setting 2");</script>';
+            // echo '<script>alert("Berhasil mengubah setting 2");</script>';
             $pesan = "Berhasil update pengaturan Batas waktu akses";
         } else {
             echo '<script>alert("Gagal mengubah setting 2 ' . mysqli_error($konek) . '");</script>';
@@ -58,7 +58,7 @@ if ($level_login == 'admin' || $level_login == 'superadmin') {
         $sql_set_admin = mysqli_query($konek, $query_set_admin);
 
         if ($sql_set_admin) {
-            echo '<script>alert("Berhasil mengubah data admin");</script>';
+            // echo '<script>alert("Berhasil mengubah data admin");</script>';
             echo '<script>location.href="setting.php";</script>';
         } else {
             echo '<script>alert("Gagal mengubah data admin");</script>';
@@ -73,7 +73,7 @@ if ($level_login == 'admin' || $level_login == 'superadmin') {
             $sql_set_admin = mysqli_query($konek, $query_set_admin);
 
             if ($sql_set_admin) {
-                echo '<script>alert("Berhasil menghapus akses admin");</script>';
+                // echo '<script>alert("Berhasil menghapus akses admin");</script>';
                 echo '<script>location.href="setting.php";</script>';
             } else {
                 echo '<script>alert("Gagal menghapus akses admin");</script>';
@@ -126,7 +126,7 @@ if ($level_login == 'admin' || $level_login == 'superadmin') {
             $sql_ubah_admin = mysqli_query($konek, $query_ubah_admin);
 
             if ($sql_ubah_admin) {
-                echo '<script>alert("Berhasil mengubah data admin, ' . $usernameadminlama . '");</script>';
+                // echo '<script>alert("Berhasil mengubah data admin, ' . $usernameadminlama . '");</script>';
                 echo '<script>location.href="setting.php";</script>';
             } else {
                 echo '<script>alert("Gagal mengubah data admin, ' . $usernameadminlama . '");</script>';
@@ -150,7 +150,7 @@ if ($level_login == 'admin' || $level_login == 'superadmin') {
         $sql_hapus_admin = mysqli_query($konek, $query_hapus_admin);
 
         if ($sql_hapus_admin) {
-            echo '<script>alert("Berhasil menghapus admin");</script>';
+            // echo '<script>alert("Berhasil menghapus admin");</script>';
             echo '<script>location.href="setting.php";</script>';
         } else {
             echo '<script>alert("Gagal menghapus admin <br>' . mysqli_error($konek) . '");</script>';
@@ -159,7 +159,7 @@ if ($level_login == 'admin' || $level_login == 'superadmin') {
     }
     // --------------------- //
 
-    
+
     // -------------------- //
     $sql = mysqli_query($konek, "SELECT * FROM statusnya");
     $data = mysqli_fetch_array($sql);

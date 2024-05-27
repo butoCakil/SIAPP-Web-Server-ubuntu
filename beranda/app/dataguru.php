@@ -1,5 +1,6 @@
 <?php
-$sql = "SELECT * FROM dataguru ORDER BY login ASC";
+// $sql = "SELECT * FROM dataguru ORDER BY ket_akses, nama ASC";
+$sql = "SELECT * FROM dataguru";
 $result = mysqli_query($konek, $sql);
 $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
 ?>
@@ -52,7 +53,7 @@ $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
 </style>
 
 <div id="dataguru_admin">
-    <table class="table table-bordered">
+    <table id="tabel_set_admin" class="table table-bordered">
         <thead>
             <tr>
                 <th>No.</th>
@@ -97,7 +98,7 @@ $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     <td class="d-flex">
                         <i class="fas fa-circle <?= $bg_titik; ?>"></i>
                         &nbsp;
-                        <?= $no++; ?>
+                        <!-- <?= $no++; ?> -->
                     </td>
                     <td id="frezz" class="text-left">
                         <?= $d['nama']; ?>
@@ -272,3 +273,38 @@ $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
         </tbody>
     </table>
 </div>
+
+
+<script>
+    $(function() {
+        $("#tabel_set_admin").DataTable({
+            dom: 'fBt',
+            "autoWidth": false,
+            "responsive": true,
+            "lengthChange": true,
+            "lengthMenu": [
+                [-1, 7, 14, 21, 31],
+                ["Semua", 7, 14, 21, 31]
+            ],
+            "pagingType": "full",
+            "language": {
+                "emptyTable": "Tida ada data untuk tanggal yang dipilih.",
+                "info": "Ditampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                "infoEmpty": "Ditampilkan 0 sampai 0 dari 0 data",
+                "infoFiltered": "(Disaring dari _MAX_ total data)",
+                "lengthMenu": "Tampilkan _MENU_ baris data",
+                "loadingRecords": "Memuat...",
+                "processing": "Memproses...",
+                "search": "Cari:",
+                "zeroRecords": "Tidak ditemukan data yang sesuai.",
+                "paginate": {
+                    "first": "<<",
+                    "last": ">>",
+                    "next": "lanjut >",
+                    "previous": "< sebelum"
+                },
+            },
+            "buttons": ["print", "pdf", "excel", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+</script>

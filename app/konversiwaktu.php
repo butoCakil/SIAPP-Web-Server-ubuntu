@@ -478,6 +478,147 @@ function tgl_minggu_terakhir($tanggal)
     }
 }
 
-function cek_hari_libur($tanggal, $kode){
-    
+// bbaru maret 2024
+
+function hitung_hari($_tanggal)
+{
+    // Ambil tahun dan bulan dari tanggal yang diberikan
+    $year = date('Y', strtotime($_tanggal));
+    $month = date('n', strtotime($_tanggal));
+
+    // Hitung jumlah hari dalam bulan yang ditentukan
+    $jumlah_hari = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+    return $jumlah_hari;
+}
+
+function hitung_hari_kerja($_tanggal)
+{
+    // Ambil tahun dan bulan dari tanggal yang diberikan
+    $year = date('Y', strtotime($_tanggal));
+    $month = date('n', strtotime($_tanggal));
+
+    // Hitung jumlah hari dalam bulan yang ditentukan
+    $jumlah_hari = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+    // Inisialisasi jumlah hari kerja
+    $jumlah_hari_kerja = 0;
+
+    // Loop untuk setiap tanggal dalam bulan yang ditentukan
+    for ($i = 1; $i <= $jumlah_hari; $i++) {
+        // Tentukan hari dalam seminggu (0 = Minggu, 6 = Sabtu)
+        $hari = date('w', mktime(0, 0, 0, $month, $i, $year));
+
+        // Jika hari bukan Sabtu (6) atau Minggu (0), tambahkan ke jumlah hari kerja
+        if ($hari != 0 && $hari != 6) {
+            $jumlah_hari_kerja++;
+        }
+    }
+
+    return $jumlah_hari_kerja;
+    // return $jumlah_hari;
+}
+
+function tanggal_ke_hari($tanggal)
+{
+    // Daftar nama hari dalam Bahasa Inggris
+    $nama_hari_inggris = array(
+        'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+    );
+
+    // Daftar nama hari dalam Bahasa Indonesia
+    $nama_hari_indonesia = array(
+        'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+    );
+
+    // Ambil nama hari dalam Bahasa Inggris dari tanggal yang diberikan
+    $nama_hari_inggris_get = date('l', strtotime($tanggal));
+
+    // Temukan indeks nama hari dalam Bahasa Inggris
+    $index_hari = array_search($nama_hari_inggris_get, $nama_hari_inggris);
+
+    // Ambil nama hari dalam Bahasa Indonesia berdasarkan indeks yang ditemukan
+    $nama_hari_indonesia = $nama_hari_indonesia[$index_hari];
+
+    return $nama_hari_indonesia;
+}
+
+function duadigit($angka)
+{
+    return sprintf("%02d", $angka);
+}
+
+function cari_data($data_array, $isi_data_kolom_dicari, $index_kolom_yang_dicari)
+{
+    // Inisialisasi array untuk menyimpan data yang sesuai
+    $data_hasil = array();
+
+    // Loop untuk setiap elemen dalam data array
+    foreach ($data_array as $data) {
+        // Periksa jika tanggal dalam data array sama dengan tanggal yang dicari
+        if ($data[$index_kolom_yang_dicari] === $isi_data_kolom_dicari) {
+            // Jika sama, tambahkan data ke dalam array hasil
+            $data_hasil[] = $data;
+        }
+    }
+
+    if (!empty($data_hasil)) {
+        return $data_hasil;
+    } else {
+        return 0;
+    }
+}
+
+function cari_data_ganda($data_array, $isi_data_kolom_dicari_1, $index_kolom_yang_dicari_1, $isi_data_kolom_dicari_2, $index_kolom_yang_dicari_2)
+{
+    // Inisialisasi array untuk menyimpan data yang sesuai
+    $data_hasil = array();
+
+    // Loop untuk setiap elemen dalam data array
+    foreach ($data_array as $data) {
+        // Periksa jika tanggal dalam data array sama dengan tanggal yang dicari
+        if ($data[$index_kolom_yang_dicari_1] === $isi_data_kolom_dicari_1) {
+            // Jika sama, tambahkan data ke dalam array hasil
+            if ($data[$index_kolom_yang_dicari_2] === $isi_data_kolom_dicari_2) {
+                $data_hasil[] = $data;
+            }
+        }
+    }
+
+    if (!empty($data_hasil)) {
+        return $data_hasil;
+    } else {
+        return 0;
+    }
+}
+
+function hari_indo_singkat($tanggal)
+{
+    // Daftar nama hari dalam Bahasa Inggris
+    $nama_hari_inggris_full = array(
+        'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+    );
+
+    // Daftar nama hari dalam Bahasa Indonesia
+    // $nama_hari_indonesia = array(
+    //     'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+    // );
+
+    $nama_hari_indonesia = array(
+        'Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'
+    );
+
+    // Ambil nama hari dalam Bahasa Inggris dari tanggal yang diberikan
+    $nama_hari_inggris = date('l', strtotime($tanggal));
+
+    // Temukan indeks nama hari dalam Bahasa Inggris
+    $index_hari = array_search($nama_hari_inggris, $nama_hari_inggris_full);
+
+    // Ambil nama hari dalam Bahasa Indonesia berdasarkan indeks yang ditemukan
+    $nama_hari_indonesia = $nama_hari_indonesia[$index_hari];
+
+    // Ambil tiga karakter pertama dari nama hari dalam Bahasa Indonesia
+    $hari_tiga_karakter = substr($nama_hari_indonesia, 0, 3);
+
+    return $hari_tiga_karakter;
 }

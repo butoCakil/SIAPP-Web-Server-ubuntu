@@ -1,6 +1,4 @@
 <?php
-// ini_set('display_errors', 1); //Atauerror_reporting(E_ALL && ~E_NOTICE);
-
 include('app/get_user.php');
 
 $tanggal = date('Y-m-d');
@@ -23,7 +21,7 @@ if (@$_GET['bulan']) {
         // $tahun_pilih = date('Y');
         // $nama_bulan_indo_pilih = bulanIndo(date('F'));
         $pesan = 'Perlu mesin waktu untuk melihat masa depan...';
-        header("Location: event.php?bulan=$bulan_tahun_pilih");
+        header("Location: rekapbulan.php?bulan=$bulan_tahun_pilih");
     }
 } else {
     $tahun_pilih = date('Y', strtotime($tanggal));
@@ -62,10 +60,10 @@ $q = mysqli_query($konek, "SELECT info FROM statusnya");
 $status = mysqli_fetch_assoc($q);
 $harikerja = $status['info'];
 
-$title = 'Presensi Kegiatan/Pembiasaan<br>';
+$title = 'Rekap Presensi ';
 $navlink = 'Wali';
-$navlink_sub = 'kegiatan';
+$navlink_sub = 'bulanan';
 
-include('views/_event.php');
+include('views/_rekapbulan.php');
 
 mysqli_close($konek);

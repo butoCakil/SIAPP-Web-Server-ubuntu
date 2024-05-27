@@ -1,9 +1,9 @@
 <?php
 include('app/get_user.php');
 
-if ($level_login == 'admin') {
+if ($level_login == 'admin' || $level_login == 'superadmin') {
     $title = 'Setting KBM';
-    $navlink = 'Form Ijin';
+    $navlink = 'setKBM';
 
     if (@$_GET['bulanset']) {
         $set_bulan = $_GET['bulanset'];
@@ -85,7 +85,7 @@ if ($level_login == 'admin') {
         //     $jumlah_jadwalgurujur++;
         // }
 
-        if(@$jur){
+        if (@$jur) {
             $sql_data_kelompok = mysqli_query($konek, "SELECT * FROM kelompokkelas WHERE jurusan = '$jur' ORDER BY info ASC");
         } else {
             $sql_data_kelompok = mysqli_query($konek, "SELECT * FROM kelompokkelas ORDER BY info ASC");
@@ -181,8 +181,8 @@ if ($level_login == 'admin') {
     $angka_hari = hari_ke_angka($first);
 
     include('views/header.php');
-    
-    if(@$_GET['jadwal_semster']){
+
+    if (@$_GET['jadwal_semster']) {
         include "views/_jadwalSemester.php";
     } else {
         include('views/_setting_kbm.php');

@@ -1,150 +1,149 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-4 connectedSortable">
-                <div class="row">
-                    <div class="card elevation-5">
-                        <div class="card-header bg-gradient-navy">
-                            <h3 class="card-title">
-                                <i class="fas fa-cog fa-spin"></i></i>&nbsp;
-                                Setting Waktu
-                            </h3>
-                            <div class="card-tools">
-                                <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top" title="Mengubah Setting Aplikasi, dan mengatur Admin"></i>
-                                <button type="button" class="btn btn-tool text-light" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+            <div class="col-lg-6 connectedSortable">
+                <div class="card elevation-5">
+                    <div class="card-header bg-gradient-navy">
+                        <h3 class="card-title">
+                            <i class="fas fa-cog fa-spin"></i></i>&nbsp;
+                            Setting Waktu
+                        </h3>
+                        <div class="card-tools">
+                            <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top" title="Mengubah Setting Aplikasi, dan mengatur Admin"></i>
+                            <button type="button" class="btn btn-tool text-light" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
                                 <i class="fas fa-times"></i>
                             </button> -->
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="nama-setting alert alert-default-info">
-                                <button type="button" class="close mr-3" data-dismiss="alert">&times;</button>
-                                Pengaturan waktu masuk dan waktu pulang
-                            </div>
-                            <div id="setting" class="container">
-                                <form method="POST" enctype="multipart/form-data">
-                                    <div class="setting-1">
-                                        <div class="pilihhari">
-                                            <label class="lb1" for="pilihhari">Hari Buka Akses</label>
-                                            <select id="pilihhari" class="form-select" aria-label="Default select example" name="pilihhari">
-                                                <?php
-
-                                                if (isset($harikerja) == "Senin - Jum'at") {
-                                                    $pilihan_1 = 'selected';
-                                                    $pilihan_2 = '';
-                                                    $pilihan_3 = '';
-                                                    $pilihan_0 = '';
-                                                } elseif (isset($harikerja) == "Senin - Sabtu") {
-                                                    $pilihan_1 = '';
-                                                    $pilihan_2 = 'selected';
-                                                    $pilihan_3 = '';
-                                                    $pilihan_0 = '';
-                                                } elseif (isset($harikerja) == "Semua Hari") {
-                                                    $pilihan_1 = '';
-                                                    $pilihan_2 = '';
-                                                    $pilihan_3 = 'selected';
-                                                    $pilihan_0 = '';
-                                                } else {
-                                                    $pilihan_1 = '';
-                                                    $pilihan_2 = '';
-                                                    $pilihan_3 = '';
-                                                    $pilihan_0 = 'selected';
-                                                }
-                                                ?>
-                                                <option <?= $pilihan_1; ?> value="5">Senin - Jum'at</option>
-                                                <option <?= $pilihan_2; ?> value="6">Senin - Sabtu</option>
-                                                <option <?= $pilihan_3; ?> value="7">Semua Hari</option>
-                                                <option <?= $pilihan_0; ?> value="0">Tidak di set</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="waktumasuk mt-2">
-                                            <label class="lb2" for="waktumasuk">Waktu Masuk</label>
-                                            <input id="waktumasuk" type="time" name="waktumasuk" class="form-control" value="<?= $waktumasuk; ?>">
-                                        </div>
-
-                                        <div class="waktupulang mt-2">
-                                            <label class="lb3" for="waktupulang">Waktu Pulang</label>
-                                            <input id="waktupulang" type="time" name="waktupulang" class="form-control" value="<?= $waktupulang; ?>">
-                                        </div>
-                                        <div id="tombolsetting mt-2">
-                                            <button type="submit" value="Terapkan" class="btn btn-success mt-3 elevation-2" name="setting1">
-                                                <i class="fas fa-check"></i>&nbsp;
-                                                Terapkan</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="card elevation-5">
-                        <div class="card-header bg-gradient-navy">
-                            <h3 class="card-title">
-                                <i class="fas fa-cog fa-spin"></i>&nbsp;
-                                Setting Batas Akses
-                            </h3>
-                            <div class="card-tools">
-                                <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top" title="Mengubah Setting Aplikasi, dan mengatur Admin"></i>
-                                <button type="button" class="btn btn-tool text-light" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button> -->
-                            </div>
+                    <div class="card-body">
+                        <div class="nama-setting alert alert-default-info">
+                            <button type="button" class="close mr-3" data-dismiss="alert">&times;</button>
+                            Pengaturan waktu masuk dan waktu pulang
                         </div>
-                        <div class="card-body">
-                            <div class="nama-setting alert alert-default-info">
-                                <button type="button" class="close mr-3" data-dismiss="alert">&times;</button>
-                                Pengaturan Batas Akses
-                            </div>
+                        <div id="setting" class="container">
+                            <form method="POST" enctype="multipart/form-data">
+                                <div class="setting-1">
+                                    <div class="pilihhari">
+                                        <label class="lb1" for="pilihhari">Hari Buka Akses</label>
+                                        <select id="pilihhari" class="form-select" aria-label="Default select example" name="pilihhari">
+                                            <?php
 
-                            <div id="setting" class="container">
-                                <form method="POST" enctype="multipart/form-data">
-                                    <div class="setting-2 mb-3">
-                                        <div class="waktu-1">
-                                            <label class="lb2-1 mt-2" for="bukamasuk">Buka Akses Masuk</label>
-                                            <input id="bukamasuk" type="time" name="bukamasuk" class="form-control" value="<?= $wa; ?>">
-                                        </div>
-                                        <div class="waktu-2">
-                                            <label class="lb2-2 mt-2" for="tutupmasuk">Tutup Akses Masuk</label>
-                                            <input id="tutupmasuk" type="time" name="tutupmasuk" class="form-control" value="<?= $wta; ?>">
-                                        </div>
-                                        <div class="waktu-3">
-                                            <label class="lb2-3 mt-2" for="bukapulang">Buka Akses Pulang</label>
-                                            <input id="bukapulang" type="time" name="bukapulang" class="form-control" value="<?= $wtp; ?>">
-                                        </div>
-                                        <div class="waktu-4">
-                                            <label class="lb2-4 mt-2" for="tutuppulang">Tutup Akses Pulang</label>
-                                            <input id="tutuppulang" type="time" name="tutuppulang" class="form-control" value="<?= $wp; ?>">
-                                        </div>
-                                        <div id="tombolsetting2">
-                                            <button type="submit" value="set" class="btn btn-success mt-3 elevation-2" name="setting2">
-                                                <i class="fas fa-check"></i>&nbsp;
-                                                Terapkan</button>
-                                        </div>
+                                            if (isset($harikerja) == "Senin - Jum'at") {
+                                                $pilihan_1 = 'selected';
+                                                $pilihan_2 = '';
+                                                $pilihan_3 = '';
+                                                $pilihan_0 = '';
+                                            } elseif (isset($harikerja) == "Senin - Sabtu") {
+                                                $pilihan_1 = '';
+                                                $pilihan_2 = 'selected';
+                                                $pilihan_3 = '';
+                                                $pilihan_0 = '';
+                                            } elseif (isset($harikerja) == "Semua Hari") {
+                                                $pilihan_1 = '';
+                                                $pilihan_2 = '';
+                                                $pilihan_3 = 'selected';
+                                                $pilihan_0 = '';
+                                            } else {
+                                                $pilihan_1 = '';
+                                                $pilihan_2 = '';
+                                                $pilihan_3 = '';
+                                                $pilihan_0 = 'selected';
+                                            }
+                                            ?>
+                                            <option <?= $pilihan_1; ?> value="5">Senin - Jum'at</option>
+                                            <option <?= $pilihan_2; ?> value="6">Senin - Sabtu</option>
+                                            <option <?= $pilihan_3; ?> value="7">Semua Hari</option>
+                                            <option <?= $pilihan_0; ?> value="0">Tidak di set</option>
+                                        </select>
                                     </div>
-                                </form>
-                            </div>
+
+                                    <div class="waktumasuk mt-2">
+                                        <label class="lb2" for="waktumasuk">Waktu Masuk</label>
+                                        <input id="waktumasuk" type="time" name="waktumasuk" class="form-control" value="<?= $waktumasuk; ?>">
+                                    </div>
+
+                                    <div class="waktupulang mt-2">
+                                        <label class="lb3" for="waktupulang">Waktu Pulang</label>
+                                        <input id="waktupulang" type="time" name="waktupulang" class="form-control" value="<?= $waktupulang; ?>">
+                                    </div>
+                                    <div id="tombolsetting mt-2">
+                                        <button type="submit" value="Terapkan" class="btn btn-success mt-3 elevation-2" name="setting1">
+                                            <i class="fas fa-check"></i>&nbsp;
+                                            Terapkan</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-6 connectedSortable">
+                <div class="card elevation-5">
+                    <div class="card-header bg-gradient-navy">
+                        <h3 class="card-title">
+                            <i class="fas fa-cog fa-spin"></i>&nbsp;
+                            Setting Batas Akses
+                        </h3>
+                        <div class="card-tools">
+                            <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top" title="Mengubah Setting Aplikasi, dan mengatur Admin"></i>
+                            <button type="button" class="btn btn-tool text-light" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button> -->
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="nama-setting alert alert-default-info">
+                            <button type="button" class="close mr-3" data-dismiss="alert">&times;</button>
+                            Pengaturan Batas Akses
+                        </div>
 
-            <style>
-                #setting_admin .card-body {
-                    /* max-height: 200px; */
-                    margin-bottom: -50px;
-                    /* overflow: auto; */
-                }
-            </style>
+                        <div id="setting" class="container">
+                            <form method="POST" enctype="multipart/form-data">
+                                <div class="setting-2 mb-3">
+                                    <div class="waktu-1">
+                                        <label class="lb2-1 mt-2" for="bukamasuk">Buka Akses Masuk</label>
+                                        <input id="bukamasuk" type="time" name="bukamasuk" class="form-control" value="<?= $wa; ?>">
+                                    </div>
+                                    <div class="waktu-2">
+                                        <label class="lb2-2 mt-2" for="tutupmasuk">Tutup Akses Masuk</label>
+                                        <input id="tutupmasuk" type="time" name="tutupmasuk" class="form-control" value="<?= $wta; ?>">
+                                    </div>
+                                    <div class="waktu-3">
+                                        <label class="lb2-3 mt-2" for="bukapulang">Buka Akses Pulang</label>
+                                        <input id="bukapulang" type="time" name="bukapulang" class="form-control" value="<?= $wtp; ?>">
+                                    </div>
+                                    <div class="waktu-4">
+                                        <label class="lb2-4 mt-2" for="tutuppulang">Tutup Akses Pulang</label>
+                                        <input id="tutuppulang" type="time" name="tutuppulang" class="form-control" value="<?= $wp; ?>">
+                                    </div>
+                                    <div id="tombolsetting2">
+                                        <button type="submit" value="set" class="btn btn-success mt-3 elevation-2" name="setting2">
+                                            <i class="fas fa-check"></i>&nbsp;
+                                            Terapkan</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <div class="col-lg-8 connectedSortable">
+        <style>
+            #setting_admin .card-body {
+                /* max-height: 200px; */
+                margin-bottom: -50px;
+                /* overflow: auto; */
+            }
+        </style>
+        <div class="row">
+            <div class="col-lg-12 connectedSortable">
                 <?php if (@$_SESSION['level_login'] == 'superadmin') { ?>
                     <div id="setting_admin" class="card elevation-5">
                         <div class="card-header bg-gradient-navy">
@@ -251,7 +250,7 @@
 
                     <style>
                         #tabel_dataguru_admin {
-                            max-height: 350px;
+                            max-height: 600px;
                             overflow: auto;
                         }
                     </style>

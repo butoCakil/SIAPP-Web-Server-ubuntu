@@ -172,7 +172,8 @@ if (@$_SESSION['level_login'] == 'superadmin') {
                 <input type="date" class="" name="getdate" id="date-value" onchange="getDataValue();">
             </div>
             <div class="btn-back-link">
-                <a href="../../../" class="btn-back-link-name">Kembali</a>
+                <a href="#" onclick="window.history.back();" class="btn-back-link-name">Kembali</a>
+                <a href="../../../" class="btn-back-link-name">Home</a>
             </div>
         </div>
 

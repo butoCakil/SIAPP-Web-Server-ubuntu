@@ -1,6 +1,4 @@
 <?php
-// ini_set('display_errors', 1); //Atauerror_reporting(E_ALL && ~E_NOTICE);
-
 include('app/get_user.php');
 
 $tanggal = date('Y-m-d');
@@ -23,7 +21,7 @@ if (@$_GET['bulan']) {
         // $tahun_pilih = date('Y');
         // $nama_bulan_indo_pilih = bulanIndo(date('F'));
         $pesan = 'Perlu mesin waktu untuk melihat masa depan...';
-        header("Location: event.php?bulan=$bulan_tahun_pilih");
+        header("Location: rekap.php?bulan=$bulan_tahun_pilih");
     }
 } else {
     $tahun_pilih = date('Y', strtotime($tanggal));
@@ -62,10 +60,49 @@ $q = mysqli_query($konek, "SELECT info FROM statusnya");
 $status = mysqli_fetch_assoc($q);
 $harikerja = $status['info'];
 
-$title = 'Presensi Kegiatan/Pembiasaan<br>';
-$navlink = 'Wali';
-$navlink_sub = 'kegiatan';
+$title = 'Rekap Presensi ';
+$navlink = 'Rekap';
+$navlink_sub = 'bulanan';
 
-include('views/_event.php');
+$nick_get = @$_GET['n'];
 
+if ($nick_get) {
+    $bulan_tahun_pilihmin = $bulan_tahun_pilihmin . "&n=" . $nick_get;
+    $bulan_tahun_pilihplus = $bulan_tahun_pilihplus  . "&n=" . $nick_get;
+
+    // Prepare the SELECT statement to check nokartu in the 'datasiswa' table
+    $query_select_datasiswa = "SELECT * FROM datasiswa WHERE nick = ?";
+    $stmt_select_datasiswa = mysqli_stmt_init($konek);
+    mysqli_stmt_prepare($stmt_select_datasiswa, $query_select_datasiswa);
+    mysqli_stmt_bind_param($stmt_select_datasiswa, "s", $nick_get);
+    mysqli_stmt_execute($stmt_select_datasiswa);
+    $result_select_datasiswa = mysqli_stmt_get_result($stmt_select_datasiswa);
+
+    if ($row = mysqli_fetch_assoc($result_select_datasiswa)) {
+        $nokartu_siswa = $row['nokartu'];
+        $nama_siswa = $row['nama'];
+        $nis_siswa = $row['nis'];
+        $noReg_siswa = $row['nis'];
+        $foto_siswa = @$row['foto'] ? $row['foto'] : "default.jpg";
+        $info_siswa = @$row['kelas'];
+        $waktu_telat_siswa = @$row['t_waktu_telat'];
+    } else {
+        $nokartu_siswa = "";
+        $nama_siswa = "";
+        $noReg_siswa = "";
+        $nis_siswa = "";
+        $foto_siswa = "";
+        $info_siswa = "";
+    }
+
+    // Tutup prepared statement
+    mysqli_stmt_close($stmt_select_datasiswa);
+
+    include('views/_rekappersiswa.php');
+} else {
+    $title = "Tidak ada data yang di tampilkan";
+
+    include('views/header.php');
+    include('views/footer.php');
+}
 mysqli_close($konek);

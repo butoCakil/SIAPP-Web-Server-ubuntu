@@ -433,6 +433,7 @@ $hasil_cari_presensi = cari_data_presensi($nokartu_siswa, $hasil_datapresensi);
                                 <!-- <th>Info [Jam] [Catatan]</th> -->
                                 <th>Keterangan</th>
                                 <!-- <th>Kontak</th> -->
+                                <th>Detail</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -565,6 +566,11 @@ $hasil_cari_presensi = cari_data_presensi($nokartu_siswa, $hasil_datapresensi);
                                     <!-- <img src="../img/app/message-circle_w.svg"> -->
                                     <!-- </a> -->
                                     <!-- </td> -->
+                                    <td>
+                                        <a target="_blank" href="rekappersiswa.php?n=<?= $hasil_datasiswa[$no]['nick']; ?>" class="btn btn-sm btn-light shadow">
+                                            <i class="fas fa-info"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                                 <?php $no++; ?>
                             <?php } ?>

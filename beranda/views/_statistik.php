@@ -1,5 +1,4 @@
 <?php
-
 if (@$_GET['page'] == 'chart') {
     $tmb1_aktif = 'disabled';
     $tmb2_aktif = '';
@@ -75,75 +74,119 @@ if (@$_GET['page'] == 'chart') {
 
 <?php
 date_default_timezone_set('Asia/Jakarta');
-$tanggal_pilih = date('Y-m-d');
+$tanggal___ = date('Y-m-d');
+
+$get_tgl = @$_GET['tgl'];
+if ($get_tgl) {
+    $tanggal_pilih = date('Y-m-d', strtotime($get_tgl));
+} else {
+    $tanggal_pilih = date('Y-m-d');
+}
+
+$bulan_pilih = date('m', strtotime($tanggal_pilih));
+$tahun_pilih = date('Y', strtotime($tanggal_pilih));
+$nama_bulan_pilih = date('F', strtotime($tahun_pilih . "-" . $bulan_pilih . "-01"));
+$bulanBahasaIndonesia = bulanIndo($nama_bulan_pilih);
+
+$tanggal_awal_bulan_pilih = $tahun_pilih . "-" . duadigit($bulan_pilih) . "-01";
+$tanggal_akhir_bulan_pilih = $tahun_pilih . "-" . duadigit($bulan_pilih) . "-31";
 
 include '../config/konesi.php';
 
-$sql_kodeinfo = mysqli_query($konek, "SELECT * FROM kodeinfo ORDER BY info ASC");
-$data_kodeinfo = array();
-while ($hasil_kodeinfo = mysqli_fetch_array($sql_kodeinfo)) {
-    $data_kodeinfo[] = $hasil_kodeinfo;
-}
+// Prepared statement untuk SELECT info FROM statusnya
+$sql_status = $konek->prepare("SELECT info FROM statusnya");
+$sql_status->execute();
+$result_status = $sql_status->get_result();
+$status = $result_status->fetch_assoc();
+$harikerja = $status['info'];
+$sql_status->close();
 
-$sql_kehadiran_hari_ini = mysqli_query($konek, "SELECT * FROM datapresensi WHERE tanggal = '$tanggal_pilih' AND kode <> 'GR'");
-$data_kehadiran_hari_ini = array();
-while ($hasil_kehadiran_hari_ini = mysqli_fetch_array($sql_kehadiran_hari_ini)) {
-    $data_kehadiran_hari_ini[] = $hasil_kehadiran_hari_ini;
-}
+// Prepared statement untuk SELECT * FROM kodeinfo
+$sql_kodeinfo = $konek->prepare("SELECT * FROM kodeinfo ORDER BY info ASC");
+$sql_kodeinfo->execute();
+$result_kodeinfo = $sql_kodeinfo->get_result();
+$data_kodeinfo = $result_kodeinfo->fetch_all(MYSQLI_ASSOC);
+$sql_kodeinfo->close();
 
-$sql_kehadiran_semua = mysqli_query($konek, "SELECT * FROM datapresensi WHERE kode <> 'GR'");
-$data_kehadiran_semua = array();
-while ($hasil_kehadiran_hari_ini = mysqli_fetch_array($sql_kehadiran_semua)) {
-    $data_kehadiran_semua[] = $hasil_kehadiran_hari_ini;
-}
+// Prepared statement untuk SELECT * FROM datapresensi WHERE tanggal = ?
+$sql_kehadiran_hari_ini = $konek->prepare("SELECT * FROM datapresensi WHERE tanggal = ? AND kode <> 'GR'");
+$sql_kehadiran_hari_ini->bind_param("s", $tanggal___);
+$sql_kehadiran_hari_ini->execute();
+$result_kehadiran_hari_ini = $sql_kehadiran_hari_ini->get_result();
+$data_kehadiran_hari_ini = $result_kehadiran_hari_ini->fetch_all(MYSQLI_ASSOC);
+$sql_kehadiran_hari_ini->close();
 
-$sql_kehadiran_kelas_hari_ini = mysqli_query($konek, "SELECT * FROM presensikelas WHERE tanggal = '$tanggal_pilih'");
-$data_kehadiran_kelas_hari_ini = array();
-while ($hasil_kehadiran_kelas = mysqli_fetch_array($sql_kehadiran_kelas_hari_ini)) {
-    $data_kehadiran_kelas_hari_ini[] = $hasil_kehadiran_kelas;
-}
+// Prepared statement untuk SELECT * FROM datapresensi WHERE tanggal = ?
+$sql_kehadiran_bulan_ini = $konek->prepare("SELECT * FROM datapresensi WHERE tanggal  BETWEEN ? AND ? AND kode <> 'GR'");
+$sql_kehadiran_bulan_ini->bind_param("ss", $tanggal_awal_bulan_pilih, $tanggal_akhir_bulan_pilih);
+$sql_kehadiran_bulan_ini->execute();
+$result_kehadiran_bulan_ini = $sql_kehadiran_bulan_ini->get_result();
+$data_kehadiran_bulan_ini = $result_kehadiran_bulan_ini->fetch_all(MYSQLI_ASSOC);
+$sql_kehadiran_bulan_ini->close();
 
-$sql_kehadiran_kelas = mysqli_query($konek, "SELECT * FROM presensikelas");
-$data_kehadiran_kelas = array();
-while ($hasil_kehadiran_kelas = mysqli_fetch_array($sql_kehadiran_kelas)) {
-    $data_kehadiran_kelas[] = $hasil_kehadiran_kelas;
-}
+// Prepared statement untuk SELECT * FROM datapresensi WHERE kode <> 'GR'
+$sql_kehadiran_semua = $konek->prepare("SELECT * FROM datapresensi WHERE kode <> 'GR'");
+$sql_kehadiran_semua->execute();
+$result_kehadiran_semua = $sql_kehadiran_semua->get_result();
+$data_kehadiran_semua = $result_kehadiran_semua->fetch_all(MYSQLI_ASSOC);
+$sql_kehadiran_semua->close();
 
-$sql_datasiswa = mysqli_query($konek, "SELECT * FROM datasiswa");
-$data_datasiswa = array();
-while ($hasil_datasiswa = mysqli_fetch_array($sql_datasiswa)) {
-    $data_datasiswa[] = $hasil_datasiswa;
-}
+// Prepared statement untuk SELECT * FROM presensikelas WHERE tanggal = ?
+$sql_kehadiran_kelas_hari_ini = $konek->prepare("SELECT * FROM presensikelas WHERE tanggal = ?");
+$sql_kehadiran_kelas_hari_ini->bind_param("s", $tanggal_pilih);
+$sql_kehadiran_kelas_hari_ini->execute();
+$result_kehadiran_kelas_hari_ini = $sql_kehadiran_kelas_hari_ini->get_result();
+$data_kehadiran_kelas_hari_ini = $result_kehadiran_kelas_hari_ini->fetch_all(MYSQLI_ASSOC);
+$sql_kehadiran_kelas_hari_ini->close();
 
-$sql_dataguru = mysqli_query($konek, "SELECT * FROM dataguru WHERE status = 'Guru'");
-$data_dataguru = array();
-while ($hasil_dataguru = mysqli_fetch_array($sql_dataguru)) {
-    $data_dataguru[] = $hasil_dataguru;
-}
+// Prepared statement untuk SELECT * FROM presensikelas
+$sql_kehadiran_kelas = $konek->prepare("SELECT * FROM presensikelas");
+$sql_kehadiran_kelas->execute();
+$result_kehadiran_kelas = $sql_kehadiran_kelas->get_result();
+$data_kehadiran_kelas = $result_kehadiran_kelas->fetch_all(MYSQLI_ASSOC);
+$sql_kehadiran_kelas->close();
 
-$sql_jadwalkbm = mysqli_query($konek, "SELECT * FROM jadwalkbm WHERE tanggal = '$tanggal_pilih'");
-$data_jadwalkbm = array();
-while ($hasil_jadwalkbm = mysqli_fetch_array($sql_jadwalkbm)) {
-    $data_jadwalkbm[] = $hasil_jadwalkbm;
-}
+// Prepared statement untuk SELECT * FROM datasiswa
+$sql_datasiswa = $konek->prepare("SELECT * FROM datasiswa");
+$sql_datasiswa->execute();
+$result_datasiswa = $sql_datasiswa->get_result();
+$data_datasiswa = $result_datasiswa->fetch_all(MYSQLI_ASSOC);
+$sql_datasiswa->close();
 
-$sql_jurnalguru = mysqli_query($konek, "SELECT * FROM jurnalguru WHERE tanggal = '$tanggal_pilih'");
-$data_jurnalguru = array();
-while ($hasil_jurnalguru = mysqli_fetch_array($sql_jurnalguru)) {
-    $data_jurnalguru[] = $hasil_jurnalguru;
-}
+// Prepared statement untuk SELECT * FROM dataguru WHERE status = 'Guru'
+$sql_dataguru = $konek->prepare("SELECT * FROM dataguru WHERE status = 'Guru'");
+$sql_dataguru->execute();
+$result_dataguru = $sql_dataguru->get_result();
+$data_dataguru = $result_dataguru->fetch_all(MYSQLI_ASSOC);
+$sql_dataguru->close();
 
-$jml_presensi_semua = count($data_kehadiran_semua);
+// Prepared statement untuk SELECT * FROM jadwalkbm WHERE tanggal = ?
+$sql_jadwalkbm = $konek->prepare("SELECT * FROM jadwalkbm WHERE tanggal = ?");
+$sql_jadwalkbm->bind_param("s", $tanggal_pilih);
+$sql_jadwalkbm->execute();
+$result_jadwalkbm = $sql_jadwalkbm->get_result();
+$data_jadwalkbm = $result_jadwalkbm->fetch_all(MYSQLI_ASSOC);
+$sql_jadwalkbm->close();
 
-$_jml_semua_siswa = count($data_datasiswa);
+// Prepared statement untuk SELECT * FROM jurnalguru WHERE tanggal = ?
+$sql_jurnalguru = $konek->prepare("SELECT * FROM jurnalguru WHERE tanggal = ?");
+$sql_jurnalguru->bind_param("s", $tanggal_pilih);
+$sql_jurnalguru->execute();
+$result_jurnalguru = $sql_jurnalguru->get_result();
+$data_jurnalguru = $result_jurnalguru->fetch_all(MYSQLI_ASSOC);
+$sql_jurnalguru->close();
+
+$jml_presensi_semua = count(@$data_kehadiran_semua);
+
+$_jml_semua_siswa = count(@$data_datasiswa);
 
 $_jml_tercatat_hadir_gate = count($data_kehadiran_hari_ini);
-$_persen_tercatat_gate = round(($_jml_tercatat_hadir / $_jml_semua_siswa) * 100, 2);
+$_persen_tercatat_gate = round((@$_jml_tercatat_hadir_gate / $_jml_semua_siswa) * 100, 2);
 
-$_jml_tercatat_hadir = count($data_kehadiran_kelas_hari_ini);
-$_persen_tercatat = round(($_jml_tercatat_hadir / $_jml_semua_siswa) * 100, 2);
+$_jml_tercatat_hadir = count(@$data_kehadiran_kelas_hari_ini);
+$_persen_tercatat = round((@$_jml_tercatat_hadir / @$_jml_semua_siswa) * 100, 2);
 
-$_semua_data_presensi_kelas = count($data_kehadiran_kelas);
+$_semua_data_presensi_kelas = count(@$data_kehadiran_kelas);
 if ($_semua_data_presensi_kelas >= 100) {
     $_semua_data_presensi_kelas = $_semua_data_presensi_kelas / 1000;
 }
@@ -154,7 +197,7 @@ mysqli_close($konek);
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-9 chart_hari_ini">
                 <!-- AREA CHART -->
                 <div class="card card-navy">
                     <div class="card-header bg-gradient-navy">
@@ -195,8 +238,15 @@ mysqli_close($konek);
                                     <b>
                                         KETERANGAN
                                     </b>
+                                    <div style="font-size: 12px;">
+                                        <span class="badge badge-sm badge-success">M</span>
+                                        <span class="badge badge-sm badge-warning">T</span>
+                                        <span class="badge badge-sm badge-info">I</span>
+                                        <span class="badge badge-sm badge-danger">A</span>
+                                    </div>
                                 </div>
                             </div>
+                            <hr>
                             <?php
                             $i = 0;
                             foreach ($data_kodeinfo as $value_kodeinfo) {
@@ -265,11 +315,14 @@ mysqli_close($konek);
 
                                         if ($_jml_data > 0) {
                                             // $_persen_H = round($_H / $_jml_data * 100, 2);
-                                            $_persen_H = round(($_H * 100) / $_jml_);
-                                            $_persen_T = round(($_T * 100) / $_jml_);
-                                            $_persen_I = round(($_I * 100) / $_jml_);
-                                            $_persen_S = round(($_S * 100) / $_jml_);
-                                            $_persen_A = round(($_A * 100) / $_jml_);
+                                            $_persen_H = round(($_H * 100) / $_jml_1_kelas);
+                                            $_persen_T = round(($_T * 100) / $_jml_1_kelas);
+                                            $_persen_I = round(($_I * 100) / $_jml_1_kelas);
+                                            $_persen_S = round(($_S * 100) / $_jml_1_kelas);
+                                            // $_persen_A = round(($_A * 100) / $_jml_1_kelas);
+
+                                            $jml_A = $_jml_1_kelas - $_jml_data;
+                                            $_persen_A = round(($jml_A * 100) / $_jml_1_kelas);
 
                                             $_persen_IS = $_persen_I + $_persen_S;
                                         } else {
@@ -277,11 +330,14 @@ mysqli_close($konek);
                                             $_persen_T = 0;
                                             $_persen_I = 0;
                                             $_persen_S = 0;
-                                            $_persen_A = 0;
+                                            $_persen_A = 100;
                                             $_persen_IS = 0;
                                         }
 
-                                        $_jml_persen_ = $_persen_H + $_persen_T + $_persen_I + $_persen_S + $_persen_A;
+                                        // $_jml_persen_ = $_persen_H + $_persen_T + $_persen_I + $_persen_S + $_persen_A;
+                                        // $_jml_persen_ = (($_jml_data * 100) / $_jml_1_kelas);
+                                        $_jml_persen_ = number_format(($_jml_data * 100) / $_jml_1_kelas, 2);
+
                                         ?>
 
                                         <div class="col-6 mt-2 mb-1">
@@ -289,9 +345,15 @@ mysqli_close($konek);
                                                 <div class="progress-bar bg-success" role="progressbar" style="width: <?= @$_persen_H; ?>%" aria-valuenow="<?= @$_persen_H; ?>" aria-valuemin="0" aria-valuemax="100">
                                                     <?= @$_persen_H; ?>
                                                 </div>
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: <?= @$_persen_T; ?>%" aria-valuenow="<?= @$_persen_T; ?>" aria-valuemin="0" aria-valuemax="0"><?= @$_persen_T; ?></div>
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: <?= @$_persen_IS; ?>%" aria-valuenow="<?= @$_persen_IS; ?>" aria-valuemin="0" aria-valuemax="100"><?= @$_persen_IS; ?></div>
-                                                <div class="progress-bar bg-danger" role="progressbar" style="width: <?= @$_persen_A; ?>%" aria-valuenow="<?= @$_persen_A; ?>" aria-valuemin="0" aria-valuemax="0"><?= @$_persen_A; ?></div>
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: <?= @$_persen_T; ?>%" aria-valuenow="<?= @$_persen_T; ?>" aria-valuemin="0" aria-valuemax="0">
+                                                    <?= @$_persen_T; ?>
+                                                </div>
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: <?= @$_persen_IS; ?>%" aria-valuenow="<?= @$_persen_IS; ?>" aria-valuemin="0" aria-valuemax="100">
+                                                    <?= @$_persen_IS; ?>
+                                                </div>
+                                                <div class="progress-bar bg-danger" role="progressbar" style="width: <?= @$_persen_A; ?>%" aria-valuenow="<?= @$_persen_A; ?>" aria-valuemin="0" aria-valuemax="0">
+                                                    <?= @$_persen_A; ?>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-4 my-1" style="font-size: 11px;">
@@ -299,13 +361,11 @@ mysqli_close($konek);
                                                 <?= $_jml_persen_; ?>&nbsp;%
                                             </span>
                                             (<?= $_jml_data; ?>/<?= $_jml_1_kelas; ?>)
-                                            <?php
-                                            $jml_A = $_jml_1_kelas - $_jml_data;
-                                            ?>
-                                            <span class="badge badge-success"><?= $_H; ?></span>
-                                            <span class="badge badge-warning"><?= $_T; ?></span>
-                                            <span class="badge badge-info"><?= ($_S + $_I); ?></span>
-                                            <span class="badge badge-danger"><?= $jml_A; ?></span>
+
+                                            <span class="badge badge-success"><?= @$_H; ?></span>
+                                            <span class="badge badge-warning"><?= @$_T; ?></span>
+                                            <span class="badge badge-info"><?= (@$_S + @$_I); ?></span>
+                                            <span class="badge badge-danger"><?= @$jml_A; ?></span>
                                         </div>
                                     </div>
                             <?php }
@@ -323,8 +383,60 @@ mysqli_close($konek);
 
                                 <!-- WWWWWWW -->
                             </div>
+
                             <div>
-                                <a href="#" class="btn btn-outline-secondary btn-sm float-md-right">
+                                <button onclick="printPortrait()" class="btn-print">Print</button>
+                                <style>
+                                    .btn-print {
+                                        background-color: #007bff;
+                                        color: #fff;
+                                        padding: 4px 8px;
+                                        border: none;
+                                        border-radius: 4px;
+                                        cursor: pointer;
+                                        transition: background-color 0.3s;
+                                    }
+
+                                    .btn-print:hover {
+                                        background-color: #0056b3;
+                                    }
+                                </style>
+
+                                <script>
+                                    function printPortrait() {
+                                        // Buat elemen style dan tambahkan aturan CSS untuk orientasi potret
+                                        var style = document.createElement('style');
+                                        style.textContent = `
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .chart_hari_ini, .chart_hari_ini * {
+                visibility: visible;
+            }
+            .chart_hari_ini {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+            @page {
+                size: A4 portrait;
+            }
+        }
+    `;
+                                        document.head.appendChild(style);
+
+                                        // Cetak halaman
+                                        window.print();
+
+                                        // Hapus elemen style setelah mencetak
+                                        style.remove();
+                                    }
+                                </script>
+
+                            </div>
+                            <div>
+                                <a href="#tabelrekappersenbulan" class="btn btn-outline-secondary btn-sm float-md-right">
                                     <i class="fas fa-info"></i>
                                     &nbsp;
                                     Selengkapnya
@@ -417,53 +529,105 @@ mysqli_close($konek);
                         $_persen_IS = 0;
                     }
 
+                    $_ALP = $_jml_semua_siswa - ($_H + $_T);
                     $persenHadirHariini = $_persen_H + $_persen_T;
+                    $tidakHadirHariini = 100 - $persenHadirHariini;
 
                     ?>
 
                     <div id="tabel_ijin" class="card-body">
-                        <h6>Kehadiran hari ini</h6>
+                        <h6 class="text-center">Kehadiran hari ini</h6>
                         <div class="tabel_curva_1">
-                            <div class="d-flex flex-wrap">
-                                <div class="col-6 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_H; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#00a65a" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">% Hadir</div>
+                            <div class="d-flex justify-content-around">
+                                <div class="progress progress-bar-vertical">
+                                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="<?= $_persen_H; ?>" aria-valuemin="0" aria-valuemax="100" style="height: <?= $_persen_H; ?>%;">
+                                        <span class="sr-only"><?= $_persen_H; ?>%</span>
+                                    </div>
                                 </div>
-
-                                <div class="col-6 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_T; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#ffaf00" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">% Terlambat</div>
+                                <div class="progress progress-bar-vertical">
+                                    <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="<?= $_persen_T; ?>" aria-valuemin="0" aria-valuemax="100" style="height: <?= $_persen_T; ?>%;">
+                                        <span class="sr-only"><?= $_persen_T; ?>%</span>
+                                    </div>
                                 </div>
-
-                                <!-- <div class="col-6 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_I; ?>" data-skin="tron" data-thickness="0.2" data-angleOffset="0" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#00c0ef" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">% Ijin</div>
+                                <div class="progress progress-bar-vertical">
+                                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="<?= $tidakHadirHariini; ?>" aria-valuemin="0" aria-valuemax="100" style="height: <?= $tidakHadirHariini; ?>%;">
+                                        <span class="sr-only"><?= $tidakHadirHariini; ?>%</span>
+                                    </div>
                                 </div>
-
-                                <div class="col-6 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_S; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#3c8dbc" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">% Sakit</div>
-                                </div>
-
-                                <div class="col-6 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_A; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#f56954" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">% Alpa</div>
-                                </div> -->
-
-                                <div class="col-6 text-center">
-                                    <input type="text" class="knob" value="<?= $persenHadirHariini; ?>" data-skin="tron" data-thickness="0.2" data-angleArc="250" data-angleOffset="-125" data-width="73" data-height="73" data-fgColor="#00011F" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">% Kehadiran Tercatat</div>
-                                </div>
-
                             </div>
+                            <div class="d-flex justify-content-around">
+                                <div>
+                                    <div><?= $_persen_H; ?>%</div>
+                                    <span class="badge badge-sm badge-success">
+                                        <?= $_H; ?>
+                                    </span>
+                                    <div>MSK</div>
+                                </div>
+                                <div>
+                                    <div><?= $_persen_T; ?>%</div>
+                                    <span class="badge badge-sm badge-warning">
+                                        <?= $_T; ?>
+                                    </span>
+                                    <div>TLT</div>
+                                </div>
+                                <div>
+                                    <div><?= $tidakHadirHariini; ?>%</div>
+                                    <span class="badge badge-sm badge-danger">
+                                        <?= $_ALP; ?>
+                                    </span>
+                                    <div>ALP</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                Jumlah Siswa: <?= $_jml_semua_siswa; ?>
+                            </div>
+                            <div class="border border-2 rounded px-2 py-0 mb-1">
+                                <p>Keterangan :<br>
+                                    <span class="badge badge-sm badge-success">M</span>
+                                    <span class="badge badge-sm badge-success">MSK</span>
+                                    : MASUK<br>
+                                    <span class="badge badge-sm badge-warning">T</span>
+                                    <span class="badge badge-sm badge-warning">TLT</span>
+                                    : TERLAMBAT<br>
+                                    <span class="badge badge-sm badge-info">I</span>
+                                    <span class="badge badge-sm badge-info">IZN</span>
+                                    : IJIN<br>
+                                    <span class="badge badge-sm badge-danger">A</span>
+                                    <span class="badge badge-sm badge-danger">ALP</span>
+                                    : ALPA / Tidak&nbsp;Masuk / Tidak&nbsp;Presensi
+                                </p>
+                            </div>
+
+                            <style>
+                                .progress-bar-vertical {
+                                    width: 20px;
+                                    min-height: 100px;
+                                    margin-right: 20px;
+                                    float: left;
+                                    display: -webkit-box;
+                                    /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+                                    display: -ms-flexbox;
+                                    /* TWEENER - IE 10 */
+                                    display: -webkit-flex;
+                                    /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+                                    display: flex;
+                                    /* NEW, Spec - Firefox, Chrome, Opera */
+                                    align-items: flex-end;
+                                    -webkit-align-items: flex-end;
+                                    /* Safari 7.0+ */
+                                }
+
+                                .progress-bar-vertical .progress-bar {
+                                    width: 100%;
+                                    height: 0;
+                                    -webkit-transition: height 0.6s ease;
+                                    -o-transition: height 0.6s ease;
+                                    transition: height 0.6s ease;
+                                }
+                            </style>
+
                         </div>
-                        <hr>
 
                         <?php
                         // data 1 hari presensi
@@ -528,58 +692,36 @@ mysqli_close($konek);
                         }
 
                         ?>
-                        <h6>Rata-rata Seluruh Kehadiran</h6>
+                        <h6 class="text-center">Rata-rata Seluruh Kehadiran</h6>
                         <div class="tabel_curva_1">
-                            <div class="d-flex flex-wrap">
-                                <div class="col-6 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_H; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#00a65a" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">% Hadir</div>
+                            <div class="d-flex justify-content-around">
+                                <div class="progress progress-bar-vertical">
+                                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="<?= $_persen_H; ?>" aria-valuemin="0" aria-valuemax="100" style="height: <?= $_persen_H; ?>%;">
+                                        <span class="sr-only"><?= $_persen_H; ?>%</span>
+                                    </div>
                                 </div>
-
-                                <div class="col-6 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_T; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#ffaf00" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">% Terlambat</div>
-                                </div>
-
-                                <!-- <div class="col-6 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_I; ?>" data-skin="tron" data-thickness="0.2" data-angleOffset="0" data-width="73" data-height="73" data-angleArc="300" data-readonly="true" data-fgColor="#00c0ef">
-
-                                    <div class="knob-label mt-n2 mb-2">% Ijin</div>
-                                </div> -->
-
-                                <!-- <div class="col-6 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_S; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#3c8dbc" data-angleArc="300" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">% Sakit</div>
-                                </div> -->
-                                <!-- 
-                                <div class="col-6 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_A; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#f56954" data-angleArc="300" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">% Alpa</div>
-                                </div> -->
-
-                            </div>
-
-                            <hr>
-                            <div class="tabel_curva_1">
-                                <div class="d-flex flex-wrap">
-                                    <div class="col-6 text-center">
-                                        <input type="text" class="knob" value="<?= $_semua_data_presensi_kelas; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#011151" data-readonly="true">
-
-                                        <div class="knob-label mt-n2 mb-2">Data Tercatat (K)</div>
+                                <div class="progress progress-bar-vertical">
+                                    <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="<?= $_persen_T; ?>" aria-valuemin="0" aria-valuemax="100" style="height: <?= $_persen_T; ?>%;">
+                                        <span class="sr-only"><?= $_persen_T; ?>%</span>
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="d-flex justify-content-around">
+                                <div>
+                                    <div><?= $_persen_H; ?>%</div>
+                                    <div>MSK</div>
+                                </div>
+                                <div>
+                                    <div><?= $_persen_T; ?>%</div>
+                                    <div>TLT</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- /.card-body -->
 
                     <div class="card-footer">
-                        <a href="#" class="btn btn-outline-secondary btn-sm float-md-right">
+                        <a href="#tabelrekappersenbulan" class="btn btn-outline-secondary btn-sm float-md-right">
                             <i class="fas fa-info"></i>
                             &nbsp;
                             Selengkapnya
@@ -593,17 +735,16 @@ mysqli_close($konek);
     </div>
 </section>
 
-<!--
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-7">
-                <div class="card card-navy">
+            <div class="col-md-12">
+                <div class="card card-navy" id="tabelrekappersenbulan">
                     <div class="card-header bg-gradient-navy">
                         <h3 class="card-title">
                             <i class="fas fa-list"></i>
                             &nbsp;
-                            Kehadiran Siswa di Kelas Hari ini (%)
+                            Rekap Presentase Kehadiran Siswa (%)
                         </h3>
 
                         <div class="card-tools">
@@ -616,127 +757,15 @@ mysqli_close($konek);
                         </div>
                     </div>
                     <div id="tabel_ijin" class="card-body">
-                        <div class="">
-
-                            <?php
-                            $i = 0;
-                            foreach ($data_kodeinfo as $value_kodeinfo) {
-                                if ($i > 2) {
-                                    $jur = $value_kodeinfo['jur'];
-
-                                    if ($jur == 'AT') {
-                                        $bg_bar1 = 'success';
-                                    } elseif ($jur == 'DKV') {
-                                        $bg_bar1 = 'primary';
-                                    } elseif ($jur == 'TE') {
-                                        $bg_bar1 = 'warning';
-                                    } else {
-                                        $bg_bar1 = 'dark';
-                                    }
-                            ?>
-                                    <div class="row w-100 mb-n2">
-                                        <div class="col-2 mb-0">
-                                            <h6 style="font-size: 12px;"><?= $value_kodeinfo['info']; ?></h6>
-                                        </div>
-
-                                        <?php
-                                        // data 1 kelas
-                                        $_data_satukelas = cari_array_($value_kodeinfo['info'], $data_datasiswa, 'kelas');
-                                        $_jml_1_kelas = count($_data_satukelas);
-
-                                        $_data_presensi_kelas = cari_array_($value_kodeinfo['info'], $data_kehadiran_kelas_hari_ini, 'kelas');
-                                        $_jml_data = count($_data_presensi_kelas);
-                                        $_jml_data = (int)$_jml_data * 1;
-
-                                        $_jml_ = $_jml_data + $_jml_1_kelas;
-
-                                        $_data_hadir = array();
-                                        $jj = 0;
-                                        $_H = 0;
-                                        $_T = 0;
-                                        $_I = 0;
-                                        $_S = 0;
-                                        $_A = 0;
-
-                                        foreach ($_data_presensi_kelas as $value_data_kehadiran) {
-                                            $__hdir = $_data_presensi_kelas[$jj]['status'];
-                                            $_data_hadir[] = $__hdir;
-
-                                            if ($__hdir == 'H') {
-                                                $_H++;
-                                            } elseif ($__hdir == 'T') {
-                                                $_T++;
-                                            } elseif ($__hdir == 'I') {
-                                                $_I++;
-                                            } elseif ($__hdir == 'S') {
-                                                $_S++;
-                                            } elseif ($__hdir == 'A') {
-                                                $_A++;
-                                            }
-
-                                            $jj++;
-                                        }
-
-                                        if ($_jml_data > 0) {
-                                            // $_persen_H = round($_H / $_jml_data * 100, 2);
-                                            $_persen_H = round(($_H * 100) / $_jml_);
-                                            $_persen_T = round(($_T * 100) / $_jml_);
-                                            $_persen_I = round(($_I * 100) / $_jml_);
-                                            $_persen_S = round(($_S * 100) / $_jml_);
-                                            $_persen_A = round(($_A * 100) / $_jml_);
-
-                                            $_persen_IS = $_persen_I + $_persen_S;
-                                            // echo "_persen_H: " . $_persen_H . "<br>";
-                                            // echo "H: " . $_H . "<br>";
-                                            // echo "T: " . $_T . "<br>";
-                                            // echo "I: " . $_I . "<br>";
-                                            // echo "S: " . $_S . "<br>";
-                                            // echo "A: " . $_A . "<br>";
-                                            // echo $_jml_data . "<pre>";
-                                            // print_r($_data_hadir);
-                                            // echo "</pre>";
-                                        } else {
-                                            $_persen_H = 0;
-                                            $_persen_T = 0;
-                                            $_persen_I = 0;
-                                            $_persen_S = 0;
-                                            $_persen_A = 0;
-                                            $_persen_IS = 0;
-                                        }
-
-                                        $_jml_persen_ = $_persen_H + $_persen_T + $_persen_I + $_persen_S + $_persen_A;
-                                        ?>
-
-                                        <div class="col-8 my-0">
-                                            <div class="progress">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: <?= $_persen_H; ?>%" aria-valuenow="<?= $_persen_H; ?>" aria-valuemin="0" aria-valuemax="100">
-                                                    <?= $_persen_H; ?>
-                                                </div>
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: <?= $_persen_T; ?>%" aria-valuenow="<?= $_persen_T; ?>" aria-valuemin="0" aria-valuemax="0"><?= $_persen_T; ?></div>
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: <?= $_persen_IS; ?>%" aria-valuenow="<?= $_persen_IS; ?>" aria-valuemin="0" aria-valuemax="100"><?= $_persen_IS; ?></div>
-                                                <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $_persen_A; ?>%" aria-valuenow="<?= $_persen_A; ?>" aria-valuemin="0" aria-valuemax="0"><?= $_persen_A; ?></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-2 my-1" style="font-size: 11px;">
-                                            <?= $_jml_persen_; ?>&nbsp;%
-                                        </div>
-                                    </div>
-                            <?php }
-                                $i++;
-                            } ?>
-                        </div>
+                        <?php
+                        include "_statistikperbulan.php";
+                        ?>
                     </div>
-                    
+
                     <div class="card-footer">
                         <div class="d-flex justify-content-between">
-                            <div style="font-size: 11px; font-style: italic;">
-                                <?php
-                                $_persen_maasuk_hariini = ($_jml_tercatat_hadir / $_jml_semua_siswa) * 100;
-                                ?>
-                                Data masuk:&nbsp;<?= $_jml_tercatat_hadir; ?>&nbsp;/&nbsp;<?= $_jml_semua_siswa; ?>&nbsp;(<?= $_persen_maasuk_hariini; ?>&nbsp;%)
-                            </div>
                             <div>
-                                <a href="#" class="btn btn-outline-secondary btn-sm float-md-right">
+                                <a href="rekapbulan.php" class="btn btn-outline-secondary btn-sm float-md-right">
                                     <i class="fas fa-info"></i>
                                     &nbsp;
                                     Selengkapnya
@@ -744,248 +773,11 @@ mysqli_close($konek);
                             </div>
                         </div>
                     </div>
-                    
-                </div>
-                
-            </div>
-            
-
-            <div class="col-md-5">
-                
-                <div class="card card-navy">
-                    <div class="card-header bg-gradient-navy">
-                        <h3 class="card-title">
-                            <i class="fas fa-chart-pie"></i>
-                            &nbsp;
-                            Info Kehadiran
-                        </h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <?php
-                    // data 1 hari presensi
-                    $_data_presensi_kelas = cari_array_orderby($data_kehadiran_kelas_hari_ini, 'status');
-                    $_jml_data = count($_data_presensi_kelas);
-                    $_jml_data = (int)$_jml_data * 1;
-
-                    $_jml_ = $_jml_data + $_jml_1_kelas;
-
-                    $_data_hadir = array();
-                    $jj = 0;
-                    $_H = 0;
-                    $_T = 0;
-                    $_I = 0;
-                    $_S = 0;
-                    $_A = 0;
-
-                    foreach ($_data_presensi_kelas as $value_data_kehadiran) {
-                        $__hdir = $_data_presensi_kelas[$jj]['status'];
-                        $_data_hadir[] = $__hdir;
-
-                        if ($__hdir == 'H') {
-                            $_H++;
-                        } elseif ($__hdir == 'T') {
-                            $_T++;
-                        } elseif ($__hdir == 'I') {
-                            $_I++;
-                        } elseif ($__hdir == 'S') {
-                            $_S++;
-                        } elseif ($__hdir == 'A') {
-                            $_A++;
-                        }
-
-                        $jj++;
-                    }
-
-                    if ($_jml_data > 0) {
-                        // $_persen_H = round($_H / $_jml_data * 100, 2);
-                        $_persen_H = round(($_H * 100) / $_jml_);
-                        $_persen_T = round(($_T * 100) / $_jml_);
-                        $_persen_I = round(($_I * 100) / $_jml_);
-                        $_persen_S = round(($_S * 100) / $_jml_);
-                        $_persen_A = round(($_A * 100) / $_jml_);
-
-                        $_persen_IS = $_persen_I + $_persen_S;
-                        // echo "_persen_H: " . $_persen_H . "<br>";
-                        // echo "H: " . $_H . "<br>";
-                        // echo "T: " . $_T . "<br>";
-                        // echo "I: " . $_I . "<br>";
-                        // echo "S: " . $_S . "<br>";
-                        // echo "A: " . $_A . "<br>";
-                        // echo $_jml_data . "<pre>";
-                        // print_r($_data_hadir);
-                        // echo "</pre>";
-                    } else {
-                        $_persen_H = 0;
-                        $_persen_T = 0;
-                        $_persen_I = 0;
-                        $_persen_S = 0;
-                        $_persen_A = 0;
-                        $_persen_IS = 0;
-                    }
-
-                    ?>
-
-                    <div id="tabel_ijin" class="card-body">
-                        <h6>Kehadiran hari ini</h6>
-                        <div class="tabel_curva_1">
-                            <div class="d-flex flex-wrap">
-                                <div class="col-4 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_H; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#00a65a" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">Hadir</div>
-                                </div>
-
-                                <div class="col-4 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_I; ?>" data-skin="tron" data-thickness="0.2" data-angleOffset="0" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#00c0ef" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">Ijin</div>
-                                </div>
-
-                                <div class="col-4 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_S; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#3c8dbc" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">Sakit</div>
-                                </div>
-
-                                <div class="col-4 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_A; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#f56954" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">Alpa</div>
-                                </div>
-
-                                <div class="col-4 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_tercatat; ?>" data-skin="tron" data-thickness="0.2" data-angleArc="250" data-angleOffset="-125" data-width="73" data-height="73" data-fgColor="#00011F" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">% Kehadiran Tercatat</div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <hr>
-
-                        <?php
-                        // data 1 hari presensi
-                        $_data_presensi_kelas = cari_array_orderby($data_kehadiran_kelas, 'status');
-                        $_jml_data = count($_data_presensi_kelas);
-                        $_jml_data = (int)$_jml_data * 1;
-
-                        $_jml_ = $_jml_data + $_jml_1_kelas;
-
-                        $_data_hadir = array();
-                        $jj = 0;
-                        $_H = 0;
-                        $_T = 0;
-                        $_I = 0;
-                        $_S = 0;
-                        $_A = 0;
-
-                        foreach ($_data_presensi_kelas as $value_data_kehadiran) {
-                            $__hdir = $_data_presensi_kelas[$jj]['status'];
-                            $_data_hadir[] = $__hdir;
-
-                            if ($__hdir == 'H') {
-                                $_H++;
-                            } elseif ($__hdir == 'T') {
-                                $_T++;
-                            } elseif ($__hdir == 'I') {
-                                $_I++;
-                            } elseif ($__hdir == 'S') {
-                                $_S++;
-                            } elseif ($__hdir == 'A') {
-                                $_A++;
-                            }
-
-                            $jj++;
-                        }
-
-                        if ($_jml_data > 0) {
-                            // $_persen_H = round($_H / $_jml_data * 100, 2);
-                            $_persen_H = round(($_H * 100) / $_jml_);
-                            $_persen_T = round(($_T * 100) / $_jml_);
-                            $_persen_I = round(($_I * 100) / $_jml_);
-                            $_persen_S = round(($_S * 100) / $_jml_);
-                            $_persen_A = round(($_A * 100) / $_jml_);
-
-                            $_persen_IS = $_persen_I + $_persen_S;
-                            // echo "_persen_H: " . $_persen_H . "<br>";
-                            // echo "H: " . $_H . "<br>";
-                            // echo "T: " . $_T . "<br>";
-                            // echo "I: " . $_I . "<br>";
-                            // echo "S: " . $_S . "<br>";
-                            // echo "A: " . $_A . "<br>";
-                            // echo $_jml_data . "<pre>";
-                            // print_r($_data_hadir);
-                            // echo "</pre>";
-                        } else {
-                            $_persen_H = 0;
-                            $_persen_T = 0;
-                            $_persen_I = 0;
-                            $_persen_S = 0;
-                            $_persen_A = 0;
-                            $_persen_IS = 0;
-                        }
-
-                        ?>
-                        <h6>Seluruh Kehadiran</h6>
-                        <div class="tabel_curva_1">
-                            <div class="d-flex flex-wrap">
-                                <div class="col-4 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_H; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-angleArc="300" data-fgColor="#00a65a" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">Hadir</div>
-                                </div>
-
-                                <div class="col-4 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_I; ?>" data-skin="tron" data-thickness="0.2" data-angleOffset="0" data-width="73" data-height="73" data-angleArc="300" data-readonly="true" data-fgColor="#00c0ef">
-
-                                    <div class="knob-label mt-n2 mb-2">Ijin</div>
-                                </div>
-
-                                <div class="col-4 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_S; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#3c8dbc" data-angleArc="300" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">Sakit</div>
-                                </div>
-
-                                <div class="col-4 text-center">
-                                    <input type="text" class="knob" value="<?= $_persen_A; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#f56954" data-angleArc="300" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">Alpa</div>
-                                </div>
-
-                                <div class="col-4 text-center">
-                                    <input type="text" class="knob" value="<?= $_semua_data_presensi_kelas; ?>" data-skin="tron" data-thickness="0.2" data-width="73" data-height="73" data-fgColor="#011151" data-readonly="true">
-
-                                    <div class="knob-label mt-n2 mb-2">Data Tercatat (K)</div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    
-
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-outline-secondary btn-sm float-md-right">
-                            <i class="fas fa-info"></i>
-                            &nbsp;
-                            Selengkapnya
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
- -->
 
 <!-- Main content -->
 <section class="content">
@@ -1007,6 +799,7 @@ mysqli_close($konek);
                         </div>
                     </div>
                     <div class="card-body">
+                        <div id="" class="form-text"><span class="text-danger m-0">*</span>&nbsp;dalam pengembangan</div>
                         <div class="d-flex">
                             <div class="chart col-5 shadow rounded">
                                 <h3 class="text-center">NA</h3>
@@ -1079,6 +872,7 @@ mysqli_close($konek);
                     </div>
 
                     <div class="card-body">
+                        <div id="" class="form-text"><span class="text-danger m-0">*</span>&nbsp;dalam pengembangan</div>
                         <div class="table-responsive">
                             <table class="table">
                                 <?php
@@ -1298,3 +1092,8 @@ function cari_tanggal($tanggal_pilih, $_array)
         color: aliceblue;
     }
 </style>
+
+<!-- 
+    Warning: Undefined variable $jml_A in C:\xampp\htdocs\siapps\beranda\views\_statistik.php on line 318
+
+ -->
